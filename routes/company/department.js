@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
 
-const { Company, validate } = require("../../models/company/company");
+const { Department, validate } = require("../../models/company/department");
 
 router.get("/", async (req, res) => {
   try {
-    const companies = await Company.find();
-    return res.json(companies);
+    const departments = await Department.find();
+    return res.json(departments);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -15,12 +15,12 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const company = await Company.find({ _id: req.params.id });
-    if (!company) {
-      return res.status(404).json({ message: "Company not found for given id." });
+    const department = await Department.find({ _id: req.params.id });
+    if (!department) {
+      return res.status(404).json({ message: "Department not found for given id." });
     }
 
-    return res.json(company);
+    return res.json(department);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -31,9 +31,9 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).json({ message: error.details[0].message });
 
   try {
-    const company = new Company(req.body);
-    const savedCompany = await company.save();
-    return res.json(savedCompany);
+    const department = new Department(req.body);
+    const savedDepartment = await department.save();
+    return res.json(savedDepartment);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -44,12 +44,13 @@ router.put("/:id", async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
 
-    const updatedCompany = await Company.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedDepartment = await Department.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    if (!updatedCompany) return res.status(404).json({ message: "Company not found for given id." });
+    if (!updatedDepartment)
+      return res.status(404).json({ message: "Department not found for given id." });
 
-    return res.json(updatedCompany);
+    return res.json(updatedDepartment);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -57,10 +58,10 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const company = await Company.findByIdAndRemove(req.params.id);
-    if (!company) return res.status(404).json({ message: "Company not found for given id." });
+    const department = await Department.findByIdAndRemove(req.params.id);
+    if (!department) return res.status(404).json({ message: "Department not found for given id." });
 
-    return res.json({ message: "Company deleted successfully" });
+    return res.json({ message: "Department deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
