@@ -27,12 +27,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// this will be used to create User first, and then this userId will be assigned to employee automatically
 router.post("/", async (req, res) => {
   try {
     const { error } = validate(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
 
+    // this will create User first, and then user._id will be added to employee document
     let user = await createUser(req, res);
 
     const employee = new Employee({ ...req.body, userId: user._id });
