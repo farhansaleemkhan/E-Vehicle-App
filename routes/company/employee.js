@@ -33,10 +33,18 @@ router.post("/", async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
 
-    let { _id } = await createUser(req, res);
-    const employee = new Employee({ ...req.body, userId: _id });
+    let user = await createUser(req, res);
+
+    const employee = new Employee({ ...req.body, userId: user._id });
     const savedEmployee = await employee.save();
-    return res.json(savedEmployee);
+
+    const token = user.generateAuthToken();
+    let data = {
+      ..._.pick(user, ["", "name", "email"]),
+      ..._.pick(savedEmployee, ["_id", "companyId", "departmentId", "assignedVehicleId", "userId"]),
+    };
+
+    return res.header("x-auth-token", token).json({ data });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
