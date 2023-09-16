@@ -4,6 +4,7 @@ const { router: users } = require("../routes/users");
 const company = require("../routes/company/company");
 const department = require("../routes/company/department");
 const employee = require("../routes/company/employee");
+const vehicle = require("../routes/vehicle/vehicle");
 const vehicleTypes = require("../routes/vehicle/vehicleType");
 const fuelTypes = require("../routes/vehicle/fuelType");
 const error = require("../middleware/error");
@@ -15,6 +16,7 @@ module.exports = function (app) {
   app.use("/api/companies", company);
   app.use("/api/departments", department);
   app.use("/api/employees", employee);
+  app.use("/api/vehicles", vehicle);
   app.use("/api/vehicle-types", vehicleTypes);
   app.use("/api/fuel-types", fuelTypes);
   app.use(error);
