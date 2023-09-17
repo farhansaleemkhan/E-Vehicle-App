@@ -1,10 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
-const Fawn = require("fawn");
-const _ = require("lodash");
-
-Fawn.init(mongoose);
 
 const { Parking, validate } = require("../../models/parking/parking");
 
