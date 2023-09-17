@@ -25,6 +25,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// TODO: increment the bookedSlots of parkingArea by 1
 router.post("/", async (req, res) => {
   try {
     const { error } = validate(req.body);
@@ -55,6 +56,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// TODO: decrement the bookedSlots of parkingArea by 1
 router.delete("/:id", async (req, res) => {
   try {
     const parking = await Parking.findByIdAndRemove(req.params.id);
