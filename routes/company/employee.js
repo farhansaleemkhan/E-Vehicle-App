@@ -38,6 +38,13 @@ router.post("/", async (req, res) => {
     const employee = new Employee({ ...req.body, userId: user._id });
     const savedEmployee = await employee.save();
 
+    // TODO: create route for assigning vehicle to employee
+    // assign only if that vehicle is not already assigned to some other employee
+    // when assigned set the vehcile property isAssigned to true
+    // we can use that router handler separately or here as well
+    // if assignedVehicle is present in req.body, then assign otherwise don't assign it when creating an employee.
+    // router.post("/assignVehicle", .......)
+
     const token = user.generateAuthToken();
     let data = {
       ..._.pick(user, ["", "name", "email"]),
@@ -68,6 +75,7 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
+    // TODO: before deleting set the isAssigned property of vehicle to false if assignedVehicle is present or vehicle is assigned
     const employee = await Employee.findByIdAndRemove(req.params.id);
     if (!employee) return res.status(404).json({ message: "Employee not found for given id." });
 

@@ -7,6 +7,7 @@ const employee = require("../routes/company/employee");
 const vehicle = require("../routes/vehicle/vehicle");
 const vehicleTypes = require("../routes/vehicle/vehicleType");
 const fuelTypes = require("../routes/vehicle/fuelType");
+const parking = require("../routes/parking/parking");
 const error = require("../middleware/error");
 
 module.exports = function (app) {
@@ -19,5 +20,6 @@ module.exports = function (app) {
   app.use("/api/vehicles", vehicle);
   app.use("/api/vehicle-types", vehicleTypes);
   app.use("/api/fuel-types", fuelTypes);
+  app.use("/api/parkings", parking);
   app.use(error);
 };
