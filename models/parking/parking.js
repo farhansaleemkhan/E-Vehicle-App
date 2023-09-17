@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
 const { Vehicle } = require("../vehicle/vehicle");
+const { ParkingArea } = require("./parkingArea");
 
 const parkingSchema = new mongoose.Schema({
   vehicleId: {
@@ -19,20 +20,24 @@ const parkingSchema = new mongoose.Schema({
   },
 });
 
-// pre hook for 'save' to update the isParked property to true when parking document is created
+// pre hook for 'save': update the isParked property to true and add 1 to the bookedSlots when parking document is created
 parkingSchema.pre("save", async function (next) {
   try {
     await Vehicle.updateOne({ _id: this.vehicleId }, { isParked: true });
+    await ParkingArea.updateOne({ _id: this.parkingAreaId }, { $inc: { bookedSlots: 1 } });
+
     next();
   } catch (error) {
     next(error);
   }
 });
 
-// pre hook for 'remove' to update the isParked property to false when parking document is deleted
+// pre hook for 'remove': update the isParked property to false and decrement 1 to the bookedSlots when parking document is deleted
 parkingSchema.pre("remove", { document: true }, async function (next) {
   try {
     await Vehicle.updateOne({ _id: this.vehicleId }, { isParked: false });
+    await ParkingArea.updateOne({ _id: this.parkingAreaId }, { $inc: { bookedSlots: -1 } });
+
     next();
   } catch (error) {
     next(error);
