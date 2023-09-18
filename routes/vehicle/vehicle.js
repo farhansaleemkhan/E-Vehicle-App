@@ -23,8 +23,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// TODO: vehcile can be assigned at the time of creation,
-// TODO: vehicle can be parked at the time of creation
 // TODO: create new model and schema for isWorkingFine/maintenance
 router.post("/", async (req, res) => {
   try {
