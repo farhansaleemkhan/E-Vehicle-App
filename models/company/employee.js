@@ -48,5 +48,20 @@ function validateEmployee(employee) {
   return Joi.validate(employee, schema);
 }
 
+function validateAssignVehicle(assignVehicle) {
+  const schema = {
+    employeeId: Joi.string()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .required(),
+    vehicleId: Joi.string()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .required(),
+    assign: Joi.boolean().required(),
+  };
+
+  return Joi.validate(assignVehicle, schema);
+}
+
 exports.Employee = Employee;
 exports.validate = validateEmployee;
+exports.validateAssignVehicle = validateAssignVehicle;

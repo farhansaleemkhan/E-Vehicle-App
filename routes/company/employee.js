@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
 
-const { Employee, validate } = require("../../models/company/employee");
-const { Vehicle } = require("../../models/vehicle/vehicle");
 const { createUser } = require("../users");
+const { Employee, validate, validateAssignVehicle } = require("../../models/company/employee");
+const { Vehicle } = require("../../models/vehicle/vehicle");
 
 router.get("/", async (req, res) => {
   try {
@@ -83,15 +83,19 @@ router.put("/assign-vehicle/:employeeId", async (req, res) => {
     const { employeeId } = req.params;
     const { vehicleId, assign } = req.body;
 
+    const { error } = validateAssignVehicle({ employeeId, vehicleId, assign });
+    if (error) return res.status(400).json({ message: error.details[0].message });
+
     const employee = await Employee.findById(employeeId);
     if (!employee) return res.status(404).json({ message: "Employee not found for given id." });
 
     const vehicle = await Vehicle.findById(vehicleId);
     if (!vehicle) return res.status(404).json({ message: "Vehicle not found for given id" });
-    if (vehicle.isAssigned === true)
-      return res.status(409).json({ message: "Vehicle already assigned." });
 
     if (assign === true) {
+      if (vehicle.isAssigned === true)
+        return res.status(409).json({ message: "Vehicle already assigned." });
+
       employee.assignedVehicleId = vehicleId;
       await employee.save();
 
@@ -100,7 +104,10 @@ router.put("/assign-vehicle/:employeeId", async (req, res) => {
 
       return res.status(200).json({ message: "Successfully assigned vehicle to employee" });
     } else if (assign === false) {
-      employee.assignedVehicleId = "";
+      if (vehicle.isAssigned === false)
+        return res.status(409).json({ message: "Vehicle is not assigned already." });
+
+      employee.assignedVehicleId = null;
       await employee.save();
 
       vehicle.isAssigned = false;
