@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const { Parking, validate } = require("../../models/parking/parking");
+const { ParkingArea } = require("../../models/parking/parkingArea");
+const { Vehicle } = require("../../models/vehicle/vehicle");
 
 router.get("/", async (req, res) => {
   try {
@@ -30,8 +32,15 @@ router.post("/", async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
 
+    const vehicle = await Vehicle.findById(req.body.vehicleId);
+    if (!vehicle) return res.status(404).json({ message: "Vehicle not found for given id." });
+    if (vehicle.isParked === true) return res.status(409).json({ message: "Vehicle already parked." });
+
+    const parkingArea = await ParkingArea.findById(req.body.parkingAreaId);
+    if (!parkingArea) return res.status(404).json({ message: "Parking area not found for given id." });
+
     const parking = new Parking(req.body);
-    const savedParking = await parking.save();
+    const savedParking = await parking.save(); // Call the save method to trigger the pre hook
 
     return res.json(savedParking);
   } catch (error) {
@@ -55,6 +64,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// TODO: refactor the logic for "save" and "remove" pre middleware logic, middleware logic can also be written here, think about it, should I use fawn?
 router.delete("/:id", async (req, res) => {
   try {
     const parking = await Parking.findByIdAndRemove(req.params.id);
