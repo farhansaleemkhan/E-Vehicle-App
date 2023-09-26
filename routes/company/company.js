@@ -3,6 +3,7 @@ const router = express.Router();
 const _ = require("lodash");
 
 const { Company, validate } = require("../../models/company/company");
+const { createUser } = require("../users");
 
 router.get("/", async (req, res) => {
   try {
@@ -31,9 +32,22 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).json({ message: error.details[0].message });
 
   try {
-    const company = new Company(req.body);
+    // this will create User first, and then user._id will be added to company document
+    let user = await createUser(req, res);
+
+    const company = new Company({ ...req.body, userId: user._id });
     const savedCompany = await company.save();
-    return res.json(savedCompany);
+
+    const token = user.generateAuthToken();
+    let data = {
+      ..._.pick(user, ["", "username", "fullName", "email", "type"]),
+      ..._.pick(savedCompany, ["_id", "userId"]),
+    };
+
+    return res
+      .header("x-auth-token", token)
+      .header("access-control-expose-headers", "x-auth-token")
+      .json({ data });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -55,6 +69,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// TODO: when a company is deleted, all the employees, departments, and parkingAreas related to it should be deleted
 router.delete("/:id", async (req, res) => {
   try {
     const company = await Company.findByIdAndRemove(req.params.id);
