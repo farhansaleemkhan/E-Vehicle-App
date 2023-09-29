@@ -1,13 +1,13 @@
 import Joi from "joi";
-import { http } from "./httpService";
-import { baseURL } from "../constants/config";
-import { showFailureToaster, showSuccessToaster } from "../utils/toaster";
-import { setLocalStorageItem } from "../utils/localStorage";
-import { auth } from "./authService";
+import { http } from "../httpService";
+import { baseURL } from "../../constants/config";
+import { showFailureToaster, showSuccessToaster } from "../../utils/toaster";
+import { setLocalStorageItem } from "../../utils/localStorage";
+import { auth } from "../authService";
 
-const userApiEndpoint = baseURL + "users";
+const employeeApiEndpoint = baseURL + "employees";
 
-const newUserSchema = Joi.object({
+const employeeSchema = Joi.object({
   // profilePicture: Joi.string().required(),
   type: Joi.string().valid("employee", "company").required(),
   username: Joi.string().min(2).max(50).required(),
@@ -29,9 +29,9 @@ const newUserSchema = Joi.object({
   city: Joi.string().min(2).max(128).required(),
 });
 
-async function addNewUser(user) {
+async function addNewEmployee(user) {
   try {
-    const response = await http.post(userApiEndpoint, { ...user });
+    const response = await http.post(employeeApiEndpoint, { ...user });
     setLocalStorageItem("token", response.headers["x-auth-token"]);
     showSuccessToaster("Successfuly created new account!");
     return true;
@@ -44,16 +44,16 @@ async function addNewUser(user) {
 async function getMyDetails() {
   try {
     http.setJwt(auth.getJwt());
-    return await http.get(userApiEndpoint + "/me");
+    return await http.get(employeeApiEndpoint + "/me");
   } catch (err) {
-    showFailureToaster(err.data.message);
+    showFailureToaster(err.data.errorMessage);
     return false;
   }
 }
 
-async function userDetails(id) {
+async function employeeDetails(id) {
   try {
-    const response = await http.get(userApiEndpoint + "/details/" + id);
+    const response = await http.get(employeeApiEndpoint + "/details/" + id);
     console.log("response in userdetails ", response);
     return response;
   } catch (err) {
@@ -62,19 +62,19 @@ async function userDetails(id) {
   }
 }
 
-async function getAllArtists() {
-  try {
-    return await http.get(userApiEndpoint + "/artists");
-  } catch (err) {
-    showFailureToaster(err.data.errorMessage);
-    return false;
-  }
-}
+// async function getAllArtists() {
+//   try {
+//     return await http.get(employeeApiEndpoint + "/artists");
+//   } catch (err) {
+//     showFailureToaster(err.data.errorMessage);
+//     return false;
+//   }
+// }
 
-export const userService = {
-  newUserSchema,
-  addNewUser,
+export const employeeService = {
+  employeeSchema,
+  addNewEmployee,
   getMyDetails,
-  getAllArtists,
-  userDetails,
+  // getAllArtists,
+  employeeDetails,
 };

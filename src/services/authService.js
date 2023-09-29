@@ -9,7 +9,7 @@ import { getLocalStorageItem, removeLocalStorageItem, setLocalStorageItem } from
 const loginApiEndpoint = baseURL + "auth";
 const tokenKey = "token";
 
-const userLoginSchema = Joi.object({
+const loginSchema = Joi.object({
   email: Joi.string()
     .min(5)
     .max(255)
@@ -27,7 +27,7 @@ async function login(user) {
     showSuccessToaster("Successfuly Logged In!");
     return true;
   } catch (err) {
-    showFailureToaster(err.data.errorMessage);
+    showFailureToaster(err.data.message);
     return false;
   }
 }
@@ -55,7 +55,7 @@ function getJwt() {
 }
 
 export const auth = {
-  userLoginSchema,
+  loginSchema,
   login,
   logout,
   getCurrentUserDetails,

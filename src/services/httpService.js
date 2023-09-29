@@ -22,6 +22,7 @@ function showToast(type) {
 
 axiosInstance.interceptors.request.use(
   (request) => {
+    console.log("request ", request);
     return request;
   },
   (error) => {
@@ -32,12 +33,13 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     showToast("success");
+    console.log("resss ", response);
     return response;
   },
   (error) => {
     const expectedError = error.response.status >= 400 && error.response.status < 500 && error.response;
     if (!expectedError) {
-      showFailureToaster("unexpected error ");
+      showFailureToaster("unexpected error");
     }
 
     showToast("error");
