@@ -1,59 +1,89 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import Loader from '../Components/Loader';
-import Error from '../Components/Error';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import Loader from "../Components/Loader";
+import { showFailureToaster } from "../utils/toaster";
+import Error from "../Components/Error";
+import { auth } from "../services/authService";
 
 const LoginScreen = () => {
-    const [email, setEmail]=useState('');
-    const [password, setPassword]=useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
 
-    function myFunction() {
-        let x = document.getElementById("myInput");
-        if (x.type === "password") {
-          x.type = "text";
-        } else {
-          x.type = "password";
-        }
-      }
+  useEffect(() => {
+    if (auth.getCurrentUserDetails()) navigate("/");
+  }, [user]);
 
-    async function Login (){
-            const user={
-                email,
-                password
-            }
-            try {
-                setLoading(true)
-                const result =(await axios.post('/api/User/login', user)).data;
-                setLoading(false)
+  const handleChange = (e) => {
+    setUser((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
 
-                localStorage.setItem('currentUser', JSON.stringify(result));
-                window.location.href='/home';
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-            } catch (error) {
-                console.log(error)
-                setLoading(false);
-                setError(true)
-            }
-    }
+    const { error } = auth.loginSchema.validate(user);
+    if (error) return showFailureToaster(error.message);
+
+    try {
+      const isLogin = await auth.login({ ...user });
+      if (isLogin) navigate("/");
+
+      // setUser({ name: "", email: "", password: "", userType: "" });
+    } catch (error) {}
+  };
+
+  function myFunction() {
+    let x = document.getElementById("password-field");
+    if (x.type === "password") x.type = "text";
+    else x.type = "password";
+  }
 
   return (
-    <div>
-        {loading && <Loader />}
-
-        <div className='row justify-content-center m-5'>
-            <div className='col-md-5 shadow m-5'>
-                {error && <Error message="Invalid Email or Password" />}
-                <h2>Login</h2>
-                <input type='email' className='form-control' placeholder='Enter Email' value={email} onChange={(e)=>{setEmail(e.target.value)}} required></input><br />
-                <input type='password' id='myInput' className='form-control' placeholder='Enter Password' value={password} onChange={(e)=>{setPassword(e.target.value)}} required></input><br />
-                <input type="checkbox" onClick={myFunction} />Show Password<br />
-                <button className='btn btn-primary m-3' onClick={Login}>Log In</button>
-            </div>
+    <div className="loginScreen">
+      <form className="col-md-5 form" onSubmit={handleSubmit}>
+        <div className="custom-form bg-white rounded">
+          <h2>Login:</h2>
+          <input
+            name="email"
+            type="email"
+            className="form-control input"
+            placeholder="Enter Email"
+            onChange={handleChange}
+            autoComplete="email"
+            required
+          ></input>
+          <br />
+          <input
+            id="password-field"
+            name="password"
+            type="password"
+            className="form-control input"
+            placeholder="Enter Password"
+            onChange={handleChange}
+            autoComplete="password"
+            required
+          ></input>
+          <br />
+          <input type="checkbox" onClick={myFunction} />
+          Show Password
+          <br />
+          <button className="btn btn-primary m-3" type="submit">
+            Log In
+          </button>
+          <button className="btn btn-primary m-3">
+            <Link to="/register" className="link">
+              Register
+            </Link>
+          </button>
         </div>
+      </form>
     </div>
-  )
-}
+  );
+};
 
 export default LoginScreen;

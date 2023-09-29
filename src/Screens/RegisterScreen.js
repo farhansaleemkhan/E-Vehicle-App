@@ -1,117 +1,195 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-const RegisterScreen = () => {
+import { showFailureToaster } from "../utils/toaster";
+import { auth } from "../services/authService";
+import { uploadImage } from "../services/imageService";
+import { cloudinary, imageUploadUrl } from "../constants/config";
+import { companyService } from "../services/company/companyService";
+
+export default function Register() {
+  const [comapny, setCompany] = useState({
+    username: "",
+    fullName: "",
+    email: "",
+    password: "",
+    phone: "",
+    address: "",
+    country: "",
+    city: "",
+    type: "company",
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth.getCurrentUserDetails()) navigate("/");
+  }, [comapny]);
+
+  //
+  const handleChange = (e) => {
+    setCompany((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+
+  const handleUploadImage = async (e) => {
+    e.preventDefault();
+
+    let file = e.target.files[0];
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", cloudinary.upload_preset);
+
+    try {
+      let uploadedImageUrl = await uploadImage(imageUploadUrl, formData);
+      setCompany((prev) => {
+        return { ...prev, profilePicture: uploadedImageUrl };
+      });
+    } catch (error) {}
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { error } = companyService.companySchema.validate(comapny);
+    if (error) return showFailureToaster(error.message);
+
+    try {
+      const isCreated = await companyService.addNewCompany({ ...comapny });
+      if (isCreated) navigate("/");
+    } catch (error) {}
+  };
+
   return (
-    <div>
-        <div className='row shadow m-5'>
-            <div className='col-md-8'>
-                <h1>Sign up as a company manager</h1>
-            </div>
-            <div className='col-md-4'>
-                <a href='/companyregister'>
-                    <button className='btn btn-secondary'>Register Company</button>
-                </a>
-            </div>
+    <div className="registrationScreen">
+      <form className="col-md-5 form" autoComplete="on" onSubmit={handleSubmit}>
+        <div className="custom-form bg-white rounded p-5" style={{ height: "80vh", overflow: "auto" }}>
+          <h3 style={{ borderBottom: "2px solid black", width: "37%" }}>Register Company:</h3>
+
+          {/* <div style={{ margin: "1rem 1rem 1rem 0 " }}>
+            <span style={{ marginRight: "1rem" }}>Register as company or employee?</span>
+            <select value={user.type} name="type" onChange={handleChange}>
+              <option value="">Select</option>
+              <option value="employee">Employee</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
+          <h5>
+            Selected Regi: <span style={{ borderBottom: "1px solid black" }}> {user.type}</span>
+          </h5> */}
+
+          {/* <div className="mb-3">
+            <label for="upload" className="file-label">
+              <span
+              //  className="file-icon"
+              >
+                📁
+              </span>
+              Upload Profile Pic
+            </label>
+            <input
+              className="form-control input form-control input-sm"
+              type="file"
+              id="upload"
+              //   className="file-input"
+              onChange={handleUploadImage}
+            />
+          </div> */}
+
+          <label htmlFor="username">Company Username:</label>
+          <input
+            name="username"
+            type="text"
+            placeholder="Enter @username."
+            className="form-control input"
+            onChange={handleChange}
+            autoComplete="username"
+          />
+
+          <label htmlFor="fullName">Company Full Name:</label>
+
+          <input
+            name="fullName"
+            type="text"
+            placeholder="Enter full name."
+            className="form-control input"
+            onChange={handleChange}
+            autoComplete="name"
+          />
+
+          <label htmlFor="email">Company Email:</label>
+          <input
+            name="email"
+            type="text"
+            placeholder="Enter email address."
+            className="form-control input"
+            onChange={handleChange}
+            autoComplete="email"
+          />
+
+          <label htmlFor="password">Company Password:</label>
+          <input
+            name="password"
+            type="password"
+            placeholder="Enter password."
+            className="form-control input"
+            onChange={handleChange}
+            autoComplete="password"
+          />
+
+          <label htmlFor="phone">Company Phone No:</label>
+          <input
+            name="phone"
+            type="phone"
+            placeholder="Enter phone."
+            className="form-control input"
+            onChange={handleChange}
+            autoComplete="phone"
+          />
+
+          <label htmlFor="address">Company Address:</label>
+          <input
+            name="address"
+            type="address"
+            placeholder="Enter address."
+            className="form-control input"
+            onChange={handleChange}
+            autoComplete="address"
+          />
+
+          <label htmlFor="country">Company Country:</label>
+          <input
+            name="country"
+            type="country"
+            placeholder="Enter country."
+            className="form-control input"
+            onChange={handleChange}
+            autoComplete="country"
+          />
+
+          <label htmlFor="city">Company City:</label>
+          <input
+            name="city"
+            type="city"
+            placeholder="Enter city."
+            className="form-control input"
+            onChange={handleChange}
+            autoComplete="city"
+          />
+
+          <div className="d-flex justify-content-end">
+            <button className="btn btn-primary mt-3 df" type="submit">
+              Register
+            </button>
+          </div>
         </div>
-        <div className='row shadow'>
-            <div></div>
-        </div>
+      </form>
+
+      <button className="btn btn-primary" style={{ position: "absolute", top: "40px", right: "40px" }}>
+        <Link to="/login" className="link">
+          Login
+        </Link>
+      </button>
     </div>
-  )
+  );
 }
-
-export default RegisterScreen;
-
-
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import Loader from '../Components/Loader';
-// import Error from '../Components/Error';
-// import Success from '../Components/Success';
-
-// const RegisterScreen=()=>{
-//     const [name, setName] = useState('');
-//     const [email, setEmail] = useState('');
-//     const [phoneNo, setPhoneNo] = useState('');
-//     const [password, setPassword] = useState('');
-//     const [cpassword, setCpassword] = useState('');
-//     const [loading, setLoading] = useState(false);
-//     const [error, setError] = useState();
-//     const [success, setSuccess]=useState();
-
-//     const isFormComplete = () => {
-//     return (
-//        name !== '' &&
-//        email !== '' &&
-//        phoneNo !== '' &&
-//        password !== '' &&
-//        cpassword !== ''
-//      );
-//      };
-    
-//     function myFunction() {
-//         let x = document.getElementById("myInput");
-//         let y = document.getElementById("myinput")
-//         if (x.type === "password" && y.type === 'password') {
-//           x.type = "text";
-//           y.type = "text";
-//         } else {
-//           x.type = "password";
-//           y.type = "password";
-//         }
-//       }
-
-//     const Register = async ()=>{
-//         if (password.length >=8 && password === cpassword) {
-//             const user = {
-//                 name,
-//                 email,
-//                 phoneNo,
-//                 password,
-//                 cpassword
-//             };
-//             try {
-//                 setLoading(true);
-//                 const result = (await axios.post('/api/User/register', user)).data;
-//                 setLoading(false);
-//                 setSuccess(true);
-//                 setName('')
-//                 setEmail('')
-//                 setPhoneNo('')
-//                 setPassword('')
-//                 setCpassword('')
-//                 // window.location.href='/login';
-//             } catch (error) {
-//                 setLoading(false);
-//                 setError(true);
-//                 console.log(error)
-//             }
-//         }
-//         else {
-//             alert("Password should be at least 8 characters long and must match the Confirm Password.");
-//         }
-//     }
-
-//     return (
-//         <div>
-//             {loading && (<Loader />)}
-//             <div className='row justify-content-center m-5'>
-//                 <div className='col-md-5 shadow mt-5'>
-//                     {error && (<Error message="Something went wrong, Please try again later." />)}
-//                     {success && (<Success message='Register Successfully' />)}
-//                     <h2>Register</h2>
-//                     <input type='text' className='form-control' placeholder='Enter Name' value={name} onChange={(e) => { setName(e.target.value); } } required></input><br />
-//                     <input type='email' className='form-control' placeholder='Enter Email' value={email} onChange={(e) => { setEmail(e.target.value); } } required></input><br />
-//                     <input type='tel' className='form-control' placeholder='Enter Phone Number' value={phoneNo} onChange={(e) => { setPhoneNo(e.target.value); } } required></input><br />
-//                     <input type='password' className='form-control' id='myInput' placeholder='Enter Password' value={password} onChange={(e) => { setPassword(e.target.value); } } required /><br />
-//                     <input type='password' className='form-control' id='myinput' placeholder='Confirm Password' value={cpassword} onChange={(e) => { setCpassword(e.target.value); } } required /><br />
-//                     <input type="checkbox" onClick={myFunction} />Show Password<br />
-//                     <button className='btn btn-primary m-3' disabled={!isFormComplete()} onClick={Register}>Register</button>
-                    
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default RegisterScreen
