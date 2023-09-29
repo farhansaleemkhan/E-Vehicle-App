@@ -1,0 +1,48 @@
+/* Screens */
+.screen {
+  display: flex;
+  height: 80vh;
+  min-height: 80vh;
+  max-height: 80vh;
+}
+
+/* Login Screen */
+.loginScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("../../public/carparking.jpg");
+  background-size: cover;
+}
+
+.loginScreen .form-control {
+  border: none;
+}
+
+/* Register Screen */
+.registrationScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("../../public/carparking2.jpg");
+  background-size: contain;
+  position: relative;
+}
+
+/* Landing Screen */
+.landingScreen {
+  /* display: flex;
+    justify-content: center;
+    align-items: center; */
+  height: 100%;
+}
+
+/* All Companies Screen */
+.allCompaniesScreen {
+  margin: 3rem 5rem;
+}
+
+.allCompaniesScreen .table-container {
+}
