@@ -1,10 +1,11 @@
 import LandingScreen from "../Screens/LandingScreen";
 import LoginScreen from "../Screens/LoginScreen";
-import RegisterScreen from "/./Screens/RegisterScreen";
-import CompanyRegScreen from "/./Screens/CompanyRegScreen";
+import RegisterScreen from "../Screens/RegisterScreen";
+import CompanyRegScreen from "../Screens/CompanyRegScreen";
 import HomeScreen from "../Screens/HomeScreen";
 import CompanyAdminScreen from "../Screens/CompanyAdminScreen";
 import BookingScreen from "../Screens/BookingScreen";
+import AllCompaniesScreen from "../Screens/company/AllCompaniesScreen";
 
 export const navbarItems = [
   //   {
@@ -18,42 +19,52 @@ export const links = [
   {
     path: "/",
     component: LandingScreen,
-    permissions: [],
+    permissions: ["employee", "company", "admin"],
     others: { exact: true },
   },
   {
     path: "/login",
     component: LoginScreen,
-    permissions: [],
+    permissions: ["employee", "company", "admin"],
   },
   {
     path: "/register",
     component: RegisterScreen,
-    permissions: [],
+    permissions: ["employee", "company", "admin"],
   },
   {
     path: "/home",
     component: HomeScreen,
-    permissions: [],
+    permissions: ["employee", "company", "admin"],
   },
   {
     path: "/book",
     component: BookingScreen,
-    permissions: [],
+    permissions: ["employee", "company", "admin"],
   },
   {
-    path: "/companyregister",
+    path: "/register-company",
     component: CompanyRegScreen,
-    permissions: [],
+    permissions: ["employee", "company", "admin"],
+  },
+  // {
+  //   path: "/company",
+  //   component: CompanyAdminScreen,
+  //   permissions: ["employee", "company", "admin"],
+  // },
+  {
+    path: "/all-companies",
+    component: AllCompaniesScreen,
+    permissions: ["employee", "company", "admin"],
   },
   {
-    path: "/companyadmin",
+    path: "/company",
     component: CompanyAdminScreen,
-    permissions: [],
+    permissions: ["employee", "company", "admin"],
   },
   {
     path: "*",
     component: LandingScreen,
-    permissions: [""],
+    permissions: ["employee", "company", "admin"],
   },
 ];
