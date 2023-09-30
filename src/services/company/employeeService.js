@@ -41,26 +41,42 @@ async function addNewEmployee(user) {
   }
 }
 
-async function getMyDetails() {
+// employeeId is acting as query strign params, it will be automatically applied if provided
+async function getEmployees(employeeId) {
   try {
-    http.setJwt(auth.getJwt());
-    return await http.get(employeeApiEndpoint + "/me");
+    let endpoint = employeeApiEndpoint;
+    if (employeeId) endpoint += "?";
+    if (employeeId) endpoint += "_id=" + employeeId;
+
+    return await http.get(endpoint);
   } catch (err) {
     showFailureToaster(err.data.errorMessage);
     return false;
   }
 }
 
-async function employeeDetails(id) {
-  try {
-    const response = await http.get(employeeApiEndpoint + "/details/" + id);
-    console.log("response in userdetails ", response);
-    return response;
-  } catch (err) {
-    showFailureToaster(err.data.errorMessage);
-    return false;
-  }
-}
+///////////////////
+
+// async function getMyDetails() {
+//   try {
+//     http.setJwt(auth.getJwt());
+//     return await http.get(employeeApiEndpoint + "/me");
+//   } catch (err) {
+//     showFailureToaster(err.data.errorMessage);
+//     return false;
+//   }
+// }
+
+// async function employeeDetails(id) {
+//   try {
+//     const response = await http.get(employeeApiEndpoint + "/details/" + id);
+//     console.log("response in userdetails ", response);
+//     return response;
+//   } catch (err) {
+//     showFailureToaster(err.data.errorMessage);
+//     return false;
+//   }
+// }
 
 // async function getAllArtists() {
 //   try {
@@ -74,7 +90,8 @@ async function employeeDetails(id) {
 export const employeeService = {
   employeeSchema,
   addNewEmployee,
-  getMyDetails,
+  getEmployees,
+  // getMyDetails,
   // getAllArtists,
-  employeeDetails,
+  // employeeDetails,
 };
