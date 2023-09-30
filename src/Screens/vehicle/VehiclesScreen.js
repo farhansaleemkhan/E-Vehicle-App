@@ -38,8 +38,6 @@ export default function VehiclesScreen() {
         isWorkingFine: item.isWorkingFine === true ? "Yes" : "No",
       }));
 
-      console.log("vehcileresponetablebodydata ", tableBodyData);
-
       setAllVehicles(tableBodyData);
     } catch (error) {}
   };

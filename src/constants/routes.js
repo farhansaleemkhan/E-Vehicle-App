@@ -9,6 +9,7 @@ import CompanyScreen from "../Screens/company/CompanyScreen";
 import DepartmentsScreen from "../Screens/company/DepartmentsScreen";
 import EmployeesScreen from "../Screens/company/EmployeesScreen";
 import VehiclesScreen from "../Screens/vehicle/VehiclesScreen";
+import ParkingsScreen from "../Screens/vehicle/ParkingsScreen";
 
 export const navbarItems = [
   //   {
@@ -44,6 +45,11 @@ export const links = [
   {
     path: "/vehicles",
     component: VehiclesScreen,
+    permissions: ["employee", "company", "admin"],
+  },
+  {
+    path: "/parkings",
+    component: ParkingsScreen,
     permissions: ["employee", "company", "admin"],
   },
   //
