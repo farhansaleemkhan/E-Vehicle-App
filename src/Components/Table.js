@@ -36,8 +36,8 @@ function Table({ tableColumns, tableBody }) {
       <table className="table">
         <thead className="table-head">
           <tr className="tr">
-            {tableColumns?.map((item) => (
-              <th className="th" style={item.class} key={item.id}>
+            {tableColumns?.map((item, index) => (
+              <th className="th" style={item.class} key={index}>
                 {item.name}
               </th>
             ))}

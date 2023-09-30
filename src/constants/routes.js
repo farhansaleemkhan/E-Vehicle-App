@@ -7,6 +7,7 @@ import CompanyAdminScreen from "../Screens/CompanyAdminScreen";
 import BookingScreen from "../Screens/BookingScreen";
 import CompanyScreen from "../Screens/company/CompanyScreen";
 import DepartmentsScreen from "../Screens/company/DepartmentsScreen";
+import EmployeesScreen from "../Screens/company/EmployeesScreen";
 
 export const navbarItems = [
   //   {
@@ -35,15 +36,16 @@ export const links = [
     permissions: ["employee", "company", "admin"],
   },
   {
+    path: "/employees",
+    component: EmployeesScreen,
+    permissions: ["employee", "company", "admin"],
+  },
+  {
     path: "/home",
     component: HomeScreen,
     permissions: ["employee", "company", "admin"],
   },
-  {
-    path: "/book",
-    component: BookingScreen,
-    permissions: ["employee", "company", "admin"],
-  },
+
   {
     path: "/register-company",
     component: CompanyRegScreen,
@@ -74,6 +76,11 @@ export const links = [
   {
     path: "/register",
     component: RegisterScreen,
+    permissions: ["employee", "company", "admin"],
+  },
+  {
+    path: "/book",
+    component: BookingScreen,
     permissions: ["employee", "company", "admin"],
   },
 ];
