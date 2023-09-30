@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 
 import Table from "../../Components/Table";
 import DetailsContainer from "../../Components/DetailsContainer";
 import DropdownSearhable from "../../Components/DropdownSearchable";
 import { parkingAreaService } from "../../services/vehicle/parkingAreaService";
-import { parkingAreasColumns } from "../../constants/data/parkings";
+import { parkingAreasColumns, parkingColumns } from "../../constants/data/parkings";
+import { parkingService } from "../../services/vehicle/parkingService";
 
 export default function ParkingsScreen() {
-  const [allParkingLocations, setAllParkingLocations] = useState([]);
-  const [searchedParkingLocation, setSearchedParkingLocations] = useState([]);
-  const [selectedParkingLocation, setSelectedParkingLocation] = useState("");
+  const [allParkingAreas, setAllParkingAreas] = useState([]);
+  const [allParkings, setAllParkings] = useState([]);
+  const [searchedParkingArea, setSearchedParkingArea] = useState([]);
+  const [selectedParkingArea, setSelectedParkingArea] = useState("");
 
   useEffect(() => {
     fetchAllParkingLocations();
+    fetchAllParkings();
   }, []);
 
   useEffect(() => {
-    if (selectedParkingLocation.id) fetchSpecificParkingLocation(selectedParkingLocation.id);
-  }, [selectedParkingLocation]);
+    if (selectedParkingArea.id) fetchSpecificParkingLocation(selectedParkingArea.id);
+  }, [selectedParkingArea]);
 
   const fetchAllParkingLocations = async () => {
     try {
@@ -29,10 +33,10 @@ export default function ParkingsScreen() {
         totalSlots: item.totalSlots,
         bookedSlots: item.bookedSlots,
         location: "VIEW",
-        belongsTo: item.belongsTo,
+        belongsTo: item.belongsTo.userId.username,
       }));
 
-      setAllParkingLocations(tableBodyData);
+      setAllParkingAreas(tableBodyData);
     } catch (error) {}
   };
 
@@ -46,10 +50,29 @@ export default function ParkingsScreen() {
         totalSlots: item.totalSlots,
         bookedSlots: item.bookedSlots,
         location: "VIEW",
-        belongsTo: item.belongsTo,
+        belongsTo: item.belongsTo.userId.username,
       }));
 
-      setSearchedParkingLocations(tableBodyData);
+      setSearchedParkingArea(tableBodyData);
+    } catch (error) {}
+  };
+
+  const fetchAllParkings = async () => {
+    try {
+      const response = await parkingService.getParkings();
+
+      console.log("resssparkings ", response);
+      let tableBodyData = response.data.map((item) => ({
+        id: item._id,
+        parkingAreaId: item.parkingAreaId.name,
+        manufacturer: item.vehicleId.manufacturer,
+        model: item.vehicleId.model,
+        licensePlateNumber: item.vehicleId.licensePlateNumber,
+        chassisNumber: item.vehicleId.chassisNumber,
+        parkedTime: moment(+item.parkedTime).format("YYYY-MM-DD HH:mm:ss"),
+      }));
+
+      setAllParkings(tableBodyData);
     } catch (error) {}
   };
 
@@ -63,20 +86,26 @@ export default function ParkingsScreen() {
               displayKey="name"
               placeholder="Select Parking-Area."
               // style={styles.dropDown.smallDropDownWithoutBorder}
-              list={allParkingLocations}
-              selectedItem={selectedParkingLocation}
-              setSelectedItem={setSelectedParkingLocation}
+              list={allParkingAreas}
+              selectedItem={selectedParkingArea}
+              setSelectedItem={setSelectedParkingArea}
             ></DropdownSearhable>
           </div>
 
           <div className="table-container">
-            <Table tableColumns={parkingAreasColumns} tableBody={searchedParkingLocation} />
+            <Table tableColumns={parkingAreasColumns} tableBody={searchedParkingArea} />
           </div>
         </DetailsContainer>
 
         <DetailsContainer title="All Parking-Areas:" showDropdown>
           <div className="table-container">
-            <Table tableColumns={parkingAreasColumns} tableBody={allParkingLocations} />
+            <Table tableColumns={parkingAreasColumns} tableBody={allParkingAreas} />
+          </div>
+        </DetailsContainer>
+
+        <DetailsContainer title="All Parkings (Vehicles Parked):" showDropdown>
+          <div className="table-container">
+            <Table tableColumns={parkingColumns} tableBody={allParkings} />
           </div>
         </DetailsContainer>
       </div>

@@ -5,13 +5,13 @@ export const allVehiclesColumns = [
     class: { width: "10rem", minWidth: "10rem" },
   },
   {
-    name: "Model",
-    value: "Model",
+    name: "Manufacturer",
+    value: "Manufacturer",
     class: { width: "7rem", minWidth: "7rem" },
   },
   {
-    name: "Manufacturer",
-    value: "Manufacturer",
+    name: "Model",
+    value: "Model",
     class: { width: "7rem", minWidth: "7rem" },
   },
   {

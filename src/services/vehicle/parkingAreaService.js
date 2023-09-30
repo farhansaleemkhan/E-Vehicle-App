@@ -5,7 +5,7 @@ import { showFailureToaster, showSuccessToaster } from "../../utils/toaster";
 
 const parkingApiEndpoint = baseURL + "parking-areas";
 
-const parkingSchema = Joi.object({
+const parkingAreaSchema = Joi.object({
   name: Joi.string().min(2).max(128).required(),
   belongsTo: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/)
@@ -43,7 +43,7 @@ async function getParkingAreas(parkingAreaId) {
 }
 
 export const parkingAreaService = {
-  parkingSchema,
+  parkingAreaSchema,
   addParkingArea,
   getParkingAreas,
 };
