@@ -61,7 +61,6 @@ export default function ParkingsScreen() {
     try {
       const response = await parkingService.getParkings();
 
-      console.log("resssparkings ", response);
       let tableBodyData = response.data.map((item) => ({
         id: item._id,
         parkingAreaId: item.parkingAreaId.name,

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const sidebarItems = [
   { id: 2, name: "Departments", link: "/departments" },
@@ -25,9 +26,12 @@ const Sidebar = () => {
         {sidebarItems.map((item) => {
           return (
             <li className="nav-item" key={item.id}>
-              <a className="nav-link active" href={item.link}>
+              <Link className="nav-link active" to={item.link}>
                 {item.name}
-              </a>
+              </Link>
+              {/* <a className="nav-link active" href={item.link}>
+                {item.name}
+              </a> */}
             </li>
           );
         })}
