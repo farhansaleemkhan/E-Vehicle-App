@@ -5,7 +5,7 @@ import CompanyRegScreen from "../Screens/CompanyRegScreen";
 import HomeScreen from "../Screens/HomeScreen";
 import CompanyAdminScreen from "../Screens/CompanyAdminScreen";
 import BookingScreen from "../Screens/BookingScreen";
-import AllCompaniesScreen from "../Screens/company/AllCompaniesScreen";
+import CompanyScreen from "../Screens/company/CompanyScreen";
 
 export const navbarItems = [
   //   {
@@ -16,20 +16,16 @@ export const navbarItems = [
 ];
 
 export const links = [
+  // {
+  //   path: "/",
+  //   component: LandingScreen,
+  //   permissions: ["employee", "company", "admin"],
+  //   others: { exact: true },
+  // },
+
   {
-    path: "/",
-    component: LandingScreen,
-    permissions: ["employee", "company", "admin"],
-    others: { exact: true },
-  },
-  {
-    path: "/login",
-    component: LoginScreen,
-    permissions: ["employee", "company", "admin"],
-  },
-  {
-    path: "/register",
-    component: RegisterScreen,
+    path: "/companies",
+    component: CompanyScreen,
     permissions: ["employee", "company", "admin"],
   },
   {
@@ -52,11 +48,7 @@ export const links = [
   //   component: CompanyAdminScreen,
   //   permissions: ["employee", "company", "admin"],
   // },
-  {
-    path: "/all-companies",
-    component: AllCompaniesScreen,
-    permissions: ["employee", "company", "admin"],
-  },
+
   {
     path: "/company",
     component: CompanyAdminScreen,
@@ -65,6 +57,16 @@ export const links = [
   {
     path: "*",
     component: LandingScreen,
+    permissions: ["employee", "company", "admin"],
+  },
+  {
+    path: "/login",
+    component: LoginScreen,
+    permissions: ["employee", "company", "admin"],
+  },
+  {
+    path: "/register",
+    component: RegisterScreen,
     permissions: ["employee", "company", "admin"],
   },
 ];

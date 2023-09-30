@@ -31,7 +31,7 @@ const LoginScreen = () => {
 
     try {
       const isLogin = await auth.login({ ...user });
-      if (isLogin) navigate("/");
+      if (isLogin) navigate("/companies");
 
       // setUser({ name: "", email: "", password: "", userType: "" });
     } catch (error) {}

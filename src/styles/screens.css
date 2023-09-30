@@ -44,5 +44,9 @@
   margin: 3rem 5rem;
 }
 
+.allCompaniesScreen p {
+  /* color: red; */
+}
+
 .allCompaniesScreen .table-container {
 }

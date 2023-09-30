@@ -25,15 +25,14 @@ async function addNewDepartment(department) {
   }
 }
 
-// async function getMyConpanyDetails() {
-//   try {
-//     http.setJwt(auth.getJwt());
-//     return await http.get(companyApiEndpoint + "/me");
-//   } catch (err) {
-//     showFailureToaster(err.data.errorMessage);
-//     return false;
-//   }
-// }
+async function getDepartmentDetails(id) {
+  try {
+    return await http.get(departmentApiEndpoint + `/${id}`);
+  } catch (err) {
+    showFailureToaster(err.data.errorMessage);
+    return false;
+  }
+}
 
 // async function companyDetails(id) {
 //   try {
@@ -45,19 +44,36 @@ async function addNewDepartment(department) {
 //   }
 // }
 
-async function getAllDepartments() {
+// departmentId and companyId are acting as query strign params, it will automatically apply it as well
+async function getAllDepartments(departmentId, comapnyId) {
   try {
-    return await http.get(departmentApiEndpoint);
+    let endpoint = departmentApiEndpoint;
+    if (departmentId || comapnyId) endpoint += "?";
+    if (departmentId) endpoint += "departmentId=" + departmentId;
+    if (comapnyId) endpoint += "companyId=" + comapnyId;
+
+    return await http.get(endpoint);
   } catch (err) {
     showFailureToaster(err.data.errorMessage);
     return false;
   }
 }
 
+// async function getAllDepartmentsForCompany(companyId) {
+//   try {
+//     return await http.get(departmentApiEndpoint + `/${companyId}`);
+//   } catch (err) {
+//     showFailureToaster(err.data.errorMessage);
+//     return false;
+//   }
+// }
+
 export const departmentService = {
   departmentSchema,
   addNewDepartment,
+  getDepartmentDetails,
   //  getMyConpanyDetails,
   getAllDepartments,
+  //   getAllDepartmentsForCompany,
   //  companyDetails,
 };
