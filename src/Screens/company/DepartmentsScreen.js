@@ -64,12 +64,6 @@ export default function DepartmentsScreen() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="All Departments:" showDropdown>
-          <div className="table-container">
-            <Table tableColumns={allDepartmentsColumns} tableBody={allDepartments} />
-          </div>
-        </DetailsContainer>
-
         <DetailsContainer title="Search Departments For Specific Company:" showDropdown>
           <div style={{ margin: "2rem 0" }}>
             <DropdownSearhable
@@ -85,6 +79,12 @@ export default function DepartmentsScreen() {
 
           <div className="table-container">
             <Table tableColumns={allDepartmentsColumns} tableBody={departmentsForSpecificCompany} />
+          </div>
+        </DetailsContainer>
+
+        <DetailsContainer title="All Departments:" showDropdown>
+          <div className="table-container">
+            <Table tableColumns={allDepartmentsColumns} tableBody={allDepartments} />
           </div>
         </DetailsContainer>
       </div>

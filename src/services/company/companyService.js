@@ -27,7 +27,6 @@ const companySchema = Joi.object({
 async function addNewCompany(company) {
   try {
     const response = await http.post(companyApiEndpoint, { ...company });
-    setLocalStorageItem("token", response.headers["x-auth-token"]);
     showSuccessToaster("Successfuly created new company!");
 
     return true;
@@ -57,9 +56,13 @@ async function addNewCompany(company) {
 //   }
 // }
 
-async function getAllCompanies() {
+async function getCompanies(companyId) {
   try {
-    return await http.get(companyApiEndpoint);
+    let endpoint = companyApiEndpoint;
+    if (companyId) endpoint += "?";
+    if (companyId) endpoint += "_id=" + companyId;
+
+    return await http.get(endpoint);
   } catch (err) {
     showFailureToaster(err.data.errorMessage);
     return false;
@@ -70,6 +73,6 @@ export const companyService = {
   companySchema,
   addNewCompany,
   //  getMyConpanyDetails,
-  getAllCompanies,
+  getCompanies,
   //  companyDetails,
 };
