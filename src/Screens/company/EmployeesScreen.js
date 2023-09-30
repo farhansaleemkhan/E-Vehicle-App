@@ -16,7 +16,7 @@ export default function EmployeesScreen() {
   }, []);
 
   useEffect(() => {
-    if (selectedEmployee.id) fetchEmployeeDetails(selectedEmployee.id);
+    if (selectedEmployee.id) fetchSpecificEmployee(selectedEmployee.id);
   }, [selectedEmployee]);
 
   const fetchAllEmployees = async () => {
@@ -40,7 +40,7 @@ export default function EmployeesScreen() {
     } catch (error) {}
   };
 
-  const fetchEmployeeDetails = async (employeId) => {
+  const fetchSpecificEmployee = async (employeId) => {
     try {
       const response = await employeeService.getEmployees(employeId);
 
@@ -63,12 +63,6 @@ export default function EmployeesScreen() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="All Employees:" showDropdown>
-          <div className="table-container">
-            <Table tableColumns={allEmployeesColumns} tableBody={allEmployees} />
-          </div>
-        </DetailsContainer>
-
         <DetailsContainer title="Search Employee by Username:" showDropdown>
           <div style={{ margin: "2rem 0" }}>
             <DropdownSearhable
@@ -84,6 +78,12 @@ export default function EmployeesScreen() {
 
           <div className="table-container">
             <Table tableColumns={allEmployeesColumns} tableBody={searchedEmployee} />
+          </div>
+        </DetailsContainer>
+
+        <DetailsContainer title="All Employees:" showDropdown>
+          <div className="table-container">
+            <Table tableColumns={allEmployeesColumns} tableBody={allEmployees} />
           </div>
         </DetailsContainer>
       </div>

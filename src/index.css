@@ -28,6 +28,7 @@ ul {
   height: 100%;
   position: relative;
   overflow: auto;
+  min-height: 10rem;
   max-height: 20rem;
 }
 
@@ -94,8 +95,8 @@ ul {
 }
 
 .th {
-  /* width: 12rem; */
-  /* min-width: 12rem; */
+  width: 10rem;
+  min-width: 10rem;
   text-align: center;
   font-size: 0.89rem;
   height: 2rem;

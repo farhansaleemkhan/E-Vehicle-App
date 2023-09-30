@@ -8,8 +8,15 @@ import { auth } from "../authService";
 const employeeApiEndpoint = baseURL + "employees";
 
 const employeeSchema = Joi.object({
-  // profilePicture: Joi.string().required(),
-  type: Joi.string().valid("employee", "company").required(),
+  companyId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required(),
+  departmentId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required(),
+  assignedVehicleId: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
+
+  // this will be used to create User first, and then this userId will be assigned to employee automatically
   username: Joi.string().min(2).max(50).required(),
   fullName: Joi.string().min(2).max(50).required(),
   email: Joi.string()
@@ -17,22 +24,17 @@ const employeeSchema = Joi.object({
     .max(255)
     .required()
     .email({ tlds: { allow: false } }),
-  password: Joi.string()
-    .regex(/^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8}$/)
-    .required()
-    .messages({
-      "string.pattern.base": "Password must be atleast 8 characters long and alphanumeic",
-    }),
+  password: Joi.string().min(4).max(255).required(),
   phone: Joi.string().min(4).max(128).required(),
   address: Joi.string().min(5).max(1024).required(),
   country: Joi.string().min(2).max(128).required(),
   city: Joi.string().min(2).max(128).required(),
+  type: Joi.string().valid("employee", "company").required(),
 });
 
 async function addNewEmployee(user) {
   try {
     const response = await http.post(employeeApiEndpoint, { ...user });
-    setLocalStorageItem("token", response.headers["x-auth-token"]);
     showSuccessToaster("Successfuly created new account!");
     return true;
   } catch (err) {

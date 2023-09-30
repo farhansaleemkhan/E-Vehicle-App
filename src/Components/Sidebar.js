@@ -3,10 +3,11 @@ import React from "react";
 const sidebarItems = [
   { id: 2, name: "Departments", link: "/departments" },
   { id: 3, name: "Employees", link: "/employees" },
-  { id: 4, name: "Vehicles", link: "/home" },
+  { id: 4, name: "Vehicles", link: "/vehicles" },
   { id: 5, name: "Parking Areas", link: "/company" },
   { id: 2, name: "X=Departments=X", link: "/register-company" },
   { id: 3, name: "X=Employees=X", link: "/book" },
+  { id: 4, name: "X=Vehicles=X", link: "/home" },
 ];
 
 const userType = "employee";
