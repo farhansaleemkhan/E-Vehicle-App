@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Table from "../../Components/Table";
 import DetailsContainer from "../../Components/DetailsContainer";
 import DropdownSearhable from "../../Components/DropdownSearchable";
 import { allCompaniesColumns } from "../../constants/data/companies";
 import { companyService } from "../../services/company/companyService";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function ComapniesScreen() {
   const [allCompanies, setAllCompanies] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState([]);
   const [searchedCompany, setSearchedEmployee] = useState([]);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     fetchAllCompanies();
@@ -58,29 +60,33 @@ export default function ComapniesScreen() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="Search Company by Username:" showDropdown>
-          <div style={{ margin: "2rem 0" }}>
-            <DropdownSearhable
-              idkey="id"
-              displayKey="username"
-              placeholder="Select Company."
-              // style={styles.dropDown.smallDropDownWithoutBorder}
-              list={allCompanies}
-              selectedItem={selectedCompany}
-              setSelectedItem={setSelectedCompany}
-            ></DropdownSearhable>
-          </div>
+        {currentUser.type === "admin" && (
+          <>
+            <DetailsContainer title="Search Company by Username:" showDropdown>
+              <div style={{ margin: "2rem 0" }}>
+                <DropdownSearhable
+                  idkey="id"
+                  displayKey="username"
+                  placeholder="Select Company."
+                  // style={styles.dropDown.smallDropDownWithoutBorder}
+                  list={allCompanies}
+                  selectedItem={selectedCompany}
+                  setSelectedItem={setSelectedCompany}
+                ></DropdownSearhable>
+              </div>
 
-          <div className="table-container">
-            <Table tableColumns={allCompaniesColumns} tableBody={searchedCompany} />
-          </div>
-        </DetailsContainer>
+              <div className="table-container">
+                <Table tableColumns={allCompaniesColumns} tableBody={searchedCompany} />
+              </div>
+            </DetailsContainer>
 
-        <DetailsContainer title="All Companies:" showDropdown>
-          <div className="table-container">
-            <Table tableColumns={allCompaniesColumns} tableBody={allCompanies} />
-          </div>
-        </DetailsContainer>
+            <DetailsContainer title="All Companies:" showDropdown>
+              <div className="table-container">
+                <Table tableColumns={allCompaniesColumns} tableBody={allCompanies} />
+              </div>
+            </DetailsContainer>
+          </>
+        )}
       </div>
     </>
   );
