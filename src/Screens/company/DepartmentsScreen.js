@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Table from "../../Components/Table";
 import DetailsContainer from "../../Components/DetailsContainer";
@@ -6,12 +6,14 @@ import DropdownSearhable from "../../Components/DropdownSearchable";
 import { allDepartmentsColumns } from "../../constants/data/departments";
 import { companyService } from "../../services/company/companyService";
 import { departmentService } from "../../services/company/departmentService";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function DepartmentsScreen() {
   const [allCompanies, setAllCompanies] = useState([]);
   const [allDepartments, setAllDepartments] = useState([]);
   const [departmentsForSpecificCompany, setDepartmentsForSpecificCompany] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState("");
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     fetchAllCompanies();
@@ -24,7 +26,7 @@ export default function DepartmentsScreen() {
 
   const fetchAllCompanies = async () => {
     try {
-      const response = await companyService.getAllCompanies();
+      const response = await companyService.getCompanies();
 
       let tableBodyData = response.data.map((item) => ({
         id: item._id,
@@ -35,6 +37,7 @@ export default function DepartmentsScreen() {
         city: item.userId.city,
         country: item.userId.country,
       }));
+
       setAllCompanies(tableBodyData);
     } catch (error) {}
   };
@@ -64,29 +67,33 @@ export default function DepartmentsScreen() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="Search Departments For Specific Company:" showDropdown>
-          <div style={{ margin: "2rem 0" }}>
-            <DropdownSearhable
-              idkey="id"
-              displayKey="username"
-              placeholder="Select Company."
-              // style={styles.dropDown.smallDropDownWithoutBorder}
-              list={allCompanies}
-              selectedItem={selectedCompany}
-              setSelectedItem={setSelectedCompany}
-            ></DropdownSearhable>
-          </div>
+        {currentUser.type === "admin" && (
+          <>
+            <DetailsContainer title="Search Departments For Specific Company:" showDropdown>
+              <div style={{ margin: "2rem 0" }}>
+                <DropdownSearhable
+                  idkey="id"
+                  displayKey="username"
+                  placeholder="Select Company."
+                  // style={styles.dropDown.smallDropDownWithoutBorder}
+                  list={allCompanies}
+                  selectedItem={selectedCompany}
+                  setSelectedItem={setSelectedCompany}
+                ></DropdownSearhable>
+              </div>
 
-          <div className="table-container">
-            <Table tableColumns={allDepartmentsColumns} tableBody={departmentsForSpecificCompany} />
-          </div>
-        </DetailsContainer>
+              <div className="table-container">
+                <Table tableColumns={allDepartmentsColumns} tableBody={departmentsForSpecificCompany} />
+              </div>
+            </DetailsContainer>
 
-        <DetailsContainer title="All Departments:" showDropdown>
-          <div className="table-container">
-            <Table tableColumns={allDepartmentsColumns} tableBody={allDepartments} />
-          </div>
-        </DetailsContainer>
+            <DetailsContainer title="All Departments:" showDropdown>
+              <div className="table-container">
+                <Table tableColumns={allDepartmentsColumns} tableBody={allDepartments} />
+              </div>
+            </DetailsContainer>
+          </>
+        )}
       </div>
     </>
   );

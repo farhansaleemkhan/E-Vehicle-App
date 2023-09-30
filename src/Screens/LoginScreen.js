@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import Loader from "../Components/Loader";
 import { showFailureToaster } from "../utils/toaster";
 import Error from "../Components/Error";
 import { auth } from "../services/authService";
+import { AuthContext } from "../context/AuthContext";
 
 const LoginScreen = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  // TODO: replace this logic, use authcontext instead
   useEffect(() => {
     if (auth.getCurrentUserDetails()) navigate("/");
   }, [user]);
@@ -31,10 +34,15 @@ const LoginScreen = () => {
 
     try {
       const isLogin = await auth.login({ ...user });
+
       if (isLogin) navigate("/companies");
 
       // setUser({ name: "", email: "", password: "", userType: "" });
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      const user = await auth.getCurrentUserDetails();
+      dispatch({ type: "LOGIN", payload: user });
+    }
   };
 
   function myFunction() {

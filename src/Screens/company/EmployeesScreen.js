@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Table from "../../Components/Table";
 import DetailsContainer from "../../Components/DetailsContainer";
 import DropdownSearhable from "../../Components/DropdownSearchable";
 import { allEmployeesColumns } from "../../constants/data/employees";
 import { employeeService } from "../../services/company/employeeService";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function EmployeesScreen() {
   const [allEmployees, setAllEmployees] = useState([]);
   const [searchedEmployee, setSearchedEmployee] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     fetchAllEmployees();
@@ -22,7 +24,6 @@ export default function EmployeesScreen() {
   const fetchAllEmployees = async () => {
     try {
       const response = await employeeService.getEmployees();
-      console.log("employeerespone ", response);
 
       let tableBodyData = response.data.map((item) => ({
         id: item._id,
@@ -63,29 +64,33 @@ export default function EmployeesScreen() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="Search Employee by Username:" showDropdown>
-          <div style={{ margin: "2rem 0" }}>
-            <DropdownSearhable
-              idkey="id"
-              displayKey="username"
-              placeholder="Select Employee."
-              // style={styles.dropDown.smallDropDownWithoutBorder}
-              list={allEmployees}
-              selectedItem={selectedEmployee}
-              setSelectedItem={setSelectedEmployee}
-            ></DropdownSearhable>
-          </div>
+        {currentUser.type === "admin" && (
+          <>
+            <DetailsContainer title="Search Employee by Username:" showDropdown>
+              <div style={{ margin: "2rem 0" }}>
+                <DropdownSearhable
+                  idkey="id"
+                  displayKey="username"
+                  placeholder="Select Employee."
+                  // style={styles.dropDown.smallDropDownWithoutBorder}
+                  list={allEmployees}
+                  selectedItem={selectedEmployee}
+                  setSelectedItem={setSelectedEmployee}
+                ></DropdownSearhable>
+              </div>
 
-          <div className="table-container">
-            <Table tableColumns={allEmployeesColumns} tableBody={searchedEmployee} />
-          </div>
-        </DetailsContainer>
+              <div className="table-container">
+                <Table tableColumns={allEmployeesColumns} tableBody={searchedEmployee} />
+              </div>
+            </DetailsContainer>
 
-        <DetailsContainer title="All Employees:" showDropdown>
-          <div className="table-container">
-            <Table tableColumns={allEmployeesColumns} tableBody={allEmployees} />
-          </div>
-        </DetailsContainer>
+            <DetailsContainer title="All Employees:" showDropdown>
+              <div className="table-container">
+                <Table tableColumns={allEmployeesColumns} tableBody={allEmployees} />
+              </div>
+            </DetailsContainer>
+          </>
+        )}
       </div>
     </>
   );

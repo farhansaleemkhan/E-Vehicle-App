@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import moment from "moment";
 
 import Table from "../../Components/Table";
@@ -7,12 +7,14 @@ import DropdownSearhable from "../../Components/DropdownSearchable";
 import { parkingAreaService } from "../../services/vehicle/parkingAreaService";
 import { parkingAreasColumns, parkingColumns } from "../../constants/data/parkings";
 import { parkingService } from "../../services/vehicle/parkingService";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function ParkingsScreen() {
   const [allParkingAreas, setAllParkingAreas] = useState([]);
   const [allParkings, setAllParkings] = useState([]);
   const [searchedParkingArea, setSearchedParkingArea] = useState([]);
   const [selectedParkingArea, setSelectedParkingArea] = useState("");
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     fetchAllParkingLocations();
@@ -78,35 +80,39 @@ export default function ParkingsScreen() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="Search Parking-Area by Name:" showDropdown>
-          <div style={{ margin: "2rem 0" }}>
-            <DropdownSearhable
-              idkey="id"
-              displayKey="name"
-              placeholder="Select Parking-Area."
-              // style={styles.dropDown.smallDropDownWithoutBorder}
-              list={allParkingAreas}
-              selectedItem={selectedParkingArea}
-              setSelectedItem={setSelectedParkingArea}
-            ></DropdownSearhable>
-          </div>
+        {currentUser.type === "admin" && (
+          <>
+            <DetailsContainer title="Search Parking-Area by Name:" showDropdown>
+              <div style={{ margin: "2rem 0" }}>
+                <DropdownSearhable
+                  idkey="id"
+                  displayKey="name"
+                  placeholder="Select Parking-Area."
+                  // style={styles.dropDown.smallDropDownWithoutBorder}
+                  list={allParkingAreas}
+                  selectedItem={selectedParkingArea}
+                  setSelectedItem={setSelectedParkingArea}
+                ></DropdownSearhable>
+              </div>
 
-          <div className="table-container">
-            <Table tableColumns={parkingAreasColumns} tableBody={searchedParkingArea} />
-          </div>
-        </DetailsContainer>
+              <div className="table-container">
+                <Table tableColumns={parkingAreasColumns} tableBody={searchedParkingArea} />
+              </div>
+            </DetailsContainer>
 
-        <DetailsContainer title="All Parking-Areas:" showDropdown>
-          <div className="table-container">
-            <Table tableColumns={parkingAreasColumns} tableBody={allParkingAreas} />
-          </div>
-        </DetailsContainer>
+            <DetailsContainer title="All Parking-Areas:" showDropdown>
+              <div className="table-container">
+                <Table tableColumns={parkingAreasColumns} tableBody={allParkingAreas} />
+              </div>
+            </DetailsContainer>
 
-        <DetailsContainer title="All Parkings (Vehicles Parked):" showDropdown>
-          <div className="table-container">
-            <Table tableColumns={parkingColumns} tableBody={allParkings} />
-          </div>
-        </DetailsContainer>
+            <DetailsContainer title="All Parkings (Vehicles Parked):" showDropdown>
+              <div className="table-container">
+                <Table tableColumns={parkingColumns} tableBody={allParkings} />
+              </div>
+            </DetailsContainer>
+          </>
+        )}
       </div>
     </>
   );

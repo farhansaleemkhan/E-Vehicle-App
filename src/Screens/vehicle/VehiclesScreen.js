@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Table from "../../Components/Table";
 import DetailsContainer from "../../Components/DetailsContainer";
 import DropdownSearhable from "../../Components/DropdownSearchable";
 import { allVehiclesColumns } from "../../constants/data/vehicles";
 import { vehicleService } from "../../services/vehicle/vehicleService";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function VehiclesScreen() {
   const [allVehicles, setAllVehicles] = useState([]);
   const [searchedVehicle, setSearchedVehicle] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState("");
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     fetchAllVehicles();
@@ -68,29 +70,33 @@ export default function VehiclesScreen() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="Search vehicle by Chassis Number:" showDropdown>
-          <div style={{ margin: "2rem 0" }}>
-            <DropdownSearhable
-              idkey="id"
-              displayKey="chassisNumber"
-              placeholder="Select Vehicle."
-              // style={styles.dropDown.smallDropDownWithoutBorder}
-              list={allVehicles}
-              selectedItem={selectedVehicle}
-              setSelectedItem={setSelectedVehicle}
-            ></DropdownSearhable>
-          </div>
+        {currentUser.type === "admin" && (
+          <>
+            <DetailsContainer title="Search vehicle by Chassis Number:" showDropdown>
+              <div style={{ margin: "2rem 0" }}>
+                <DropdownSearhable
+                  idkey="id"
+                  displayKey="chassisNumber"
+                  placeholder="Select Vehicle."
+                  // style={styles.dropDown.smallDropDownWithoutBorder}
+                  list={allVehicles}
+                  selectedItem={selectedVehicle}
+                  setSelectedItem={setSelectedVehicle}
+                ></DropdownSearhable>
+              </div>
 
-          <div className="table-container">
-            <Table tableColumns={allVehiclesColumns} tableBody={searchedVehicle} />
-          </div>
-        </DetailsContainer>
+              <div className="table-container">
+                <Table tableColumns={allVehiclesColumns} tableBody={searchedVehicle} />
+              </div>
+            </DetailsContainer>
 
-        <DetailsContainer title="All Vehicles:" showDropdown>
-          <div className="table-container">
-            <Table tableColumns={allVehiclesColumns} tableBody={allVehicles} />
-          </div>
-        </DetailsContainer>
+            <DetailsContainer title="All Vehicles:" showDropdown>
+              <div className="table-container">
+                <Table tableColumns={allVehiclesColumns} tableBody={allVehicles} />
+              </div>
+            </DetailsContainer>
+          </>
+        )}
       </div>
     </>
   );
