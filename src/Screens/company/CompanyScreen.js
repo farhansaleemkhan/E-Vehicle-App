@@ -1,22 +1,31 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs } from "antd";
 
 import Table from "../../Components/Table";
 import DetailsContainer from "../../Components/DetailsContainer";
 import DropdownSearhable from "../../Components/DropdownSearchable";
-import { allCompaniesColumns, companyScreenTabsForAdmin } from "../../constants/data/companies";
+import {
+  allCompaniesColumns,
+  companyScreenTabsForAdmin,
+  companyScreenTabsForCompanyOwner,
+} from "../../constants/data/companies";
 import { companyService } from "../../services/company/companyService";
-import { AuthContext } from "../../context/AuthContext";
+import { getLocalStorageItem } from "../../utils/localStorage";
 
 export default function ComapniesScreen() {
+  const userType = getLocalStorageItem("userType");
+
   return (
     <div className="mt-3 ml-3 mr-3">
-      <Tabs
-        defaultActiveKey="1"
-        items={companyScreenTabsForAdmin}
-        onChange={() => {}}
-        // tabBarStyle={{ background: "red", color: "white" }}
-      />
+      {userType === "admin" && (
+        <Tabs defaultActiveKey="1" items={companyScreenTabsForAdmin} onChange={() => {}} />
+      )}
+
+      {userType === "company" && (
+        <Tabs defaultActiveKey="1" items={companyScreenTabsForCompanyOwner} onChange={() => {}} />
+      )}
+
+      {userType === "employe" && <Tabs defaultActiveKey="1" items={[]} onChange={() => {}} />}
     </div>
   );
 }
@@ -25,7 +34,6 @@ export function SearchCompany() {
   const [allCompanies, setAllCompanies] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState([]);
   const [searchedCompany, setSearchedEmployee] = useState([]);
-  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     fetchAllCompanies();
@@ -100,7 +108,6 @@ export function SearchCompany() {
 
 export function AllCompanies() {
   const [allCompanies, setAllCompanies] = useState([]);
-  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     fetchAllCompanies();

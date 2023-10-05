@@ -5,14 +5,16 @@ import Loader from "../Components/Loader";
 import { showFailureToaster } from "../utils/toaster";
 import Error from "../Components/Error";
 import { auth } from "../services/authService";
-import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../context/UserContext";
+import { companyService } from "../services/company/companyService";
+import { setLocalStorageItem } from "../utils/localStorage";
 
 const LoginScreen = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-  const { dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(UserContext);
   const navigate = useNavigate();
 
   // TODO: replace this logic, use authcontext instead
@@ -34,15 +36,17 @@ const LoginScreen = () => {
 
     try {
       const isLogin = await auth.login({ ...user });
-
       if (isLogin) navigate("/companies");
 
+      const userDetails = await auth.getCurrentUserDetails();
+      console.log("userDetails", userDetails);
+      setLocalStorageItem("userType", userDetails.type);
+      // dispatch({ type: "LOGIN", payload: userDetails });
+      // const companyDetails = await companyService.getCompanies("", userDetails._id);
+      // dispatch({ type: "ADD_COMPANY", payload: companyDetails.data[0] });
+
       // setUser({ name: "", email: "", password: "", userType: "" });
-    } catch (error) {
-    } finally {
-      const user = await auth.getCurrentUserDetails();
-      dispatch({ type: "LOGIN", payload: user });
-    }
+    } catch (error) {}
   };
 
   function myFunction() {
