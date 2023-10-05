@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Tabs } from "antd";
 import moment from "moment";
 
 import Table from "../../Components/Table";
@@ -8,7 +9,6 @@ import { parkingAreaService } from "../../services/vehicle/parkingAreaService";
 import { parkingAreasColumns, parkingColumns } from "../../constants/data/parkings";
 import { parkingService } from "../../services/vehicle/parkingService";
 import { AuthContext } from "../../context/AuthContext";
-import { Tabs } from "antd";
 
 const items = [
   {
