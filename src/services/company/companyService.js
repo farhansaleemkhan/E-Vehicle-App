@@ -9,7 +9,7 @@ const companyApiEndpoint = baseURL + "companies";
 
 const companySchema = Joi.object({
   // profilePicture: Joi.string().required(),
-  type: Joi.string().valid("employee", "company").required(),
+  type: Joi.string().valid("admin", "employee", "company").required(),
   username: Joi.string().min(2).max(50).required(),
   fullName: Joi.string().min(2).max(50).required(),
   email: Joi.string()
@@ -56,11 +56,12 @@ async function addNewCompany(company) {
 //   }
 // }
 
-async function getCompanies(companyId) {
+async function getCompanies(companyId, userId) {
   try {
     let endpoint = companyApiEndpoint;
-    if (companyId) endpoint += "?";
+    if (companyId || userId) endpoint += "?";
     if (companyId) endpoint += "_id=" + companyId;
+    if (userId) endpoint += "userId=" + userId;
 
     return await http.get(endpoint);
   } catch (err) {
