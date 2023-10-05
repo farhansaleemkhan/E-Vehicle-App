@@ -4,29 +4,16 @@ import { Tabs } from "antd";
 import Table from "../../Components/Table";
 import DetailsContainer from "../../Components/DetailsContainer";
 import DropdownSearhable from "../../Components/DropdownSearchable";
-import { allCompaniesColumns } from "../../constants/data/companies";
+import { allCompaniesColumns, companyScreenTabsForAdmin } from "../../constants/data/companies";
 import { companyService } from "../../services/company/companyService";
 import { AuthContext } from "../../context/AuthContext";
-
-const items = [
-  {
-    key: "1",
-    label: <h4>Search Company</h4>,
-    children: <SearchCompany />,
-  },
-  {
-    key: "2",
-    label: <h4>All Companies</h4>,
-    children: <AllCompanies />,
-  },
-];
 
 export default function ComapniesScreen() {
   return (
     <div className="mt-3 ml-3 mr-3">
       <Tabs
         defaultActiveKey="1"
-        items={items}
+        items={companyScreenTabsForAdmin}
         onChange={() => {}}
         // tabBarStyle={{ background: "red", color: "white" }}
       />
@@ -34,7 +21,7 @@ export default function ComapniesScreen() {
   );
 }
 
-function SearchCompany() {
+export function SearchCompany() {
   const [allCompanies, setAllCompanies] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState([]);
   const [searchedCompany, setSearchedEmployee] = useState([]);
@@ -111,7 +98,7 @@ function SearchCompany() {
   );
 }
 
-function AllCompanies() {
+export function AllCompanies() {
   const [allCompanies, setAllCompanies] = useState([]);
   const { currentUser } = useContext(AuthContext);
 

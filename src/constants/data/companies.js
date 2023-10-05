@@ -1,3 +1,5 @@
+import { AllCompanies, SearchCompany } from "../../Screens/company/CompanyScreen";
+
 export const allCompaniesColumns = [
   {
     // id: 1,
@@ -40,5 +42,26 @@ export const allCompaniesColumns = [
     name: "Country",
     value: "Country",
     class: { width: "5rem", minWidth: "5rem" },
+  },
+];
+
+export const companyScreenTabsForAdmin = [
+  {
+    key: "1",
+    label: <h4>Search Company</h4>,
+    children: <SearchCompany />,
+  },
+  {
+    key: "2",
+    label: <h4>All Companies</h4>,
+    children: <AllCompanies />,
+  },
+];
+
+export const companyScreenTabsForCompanyOwner = [
+  {
+    key: "1",
+    label: <h4>Search Company</h4>,
+    children: <SearchCompany />,
   },
 ];
