@@ -17,7 +17,7 @@ export const parkingAreasColumns = [
   {
     name: "Booked Slots",
     value: "Booked Slots",
-    class: { width: "8rem", minWidth: "8rem" },
+    class: { width: "12rem", minWidth: "12rem" },
   },
   {
     name: "Location",
