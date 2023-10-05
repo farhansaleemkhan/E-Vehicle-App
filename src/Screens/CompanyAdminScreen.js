@@ -12,14 +12,7 @@ const items = [
   {
     key: "1",
     label: <h4>Booking</h4>,
-    children: (
-      <>
-        <Booking />,
-        <Booking />,
-        <Booking />,
-        <Booking />,
-      </>
-    ),
+    children: <Booking />,
   },
   {
     key: "2",
