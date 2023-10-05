@@ -11,19 +11,19 @@ import { AuthContext } from "../../context/AuthContext";
 const items = [
   {
     key: "1",
-    label: <h4>Search</h4>,
+    label: <h4>Search Company</h4>,
     children: <SearchCompany />,
   },
   {
     key: "2",
     label: <h4>All Companies</h4>,
-    children: <AllCompany />,
+    children: <AllCompanies />,
   },
 ];
 
 export default function ComapniesScreen() {
   return (
-    <div className="mt-3 ml-3 mr-3 text-warning tabsColor">
+    <div className="mt-3 ml-3 mr-3">
       <Tabs
         defaultActiveKey="1"
         items={items}
@@ -111,7 +111,7 @@ function SearchCompany() {
   );
 }
 
-function AllCompany() {
+function AllCompanies() {
   const [allCompanies, setAllCompanies] = useState([]);
   const { currentUser } = useContext(AuthContext);
 
