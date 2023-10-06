@@ -1,3 +1,9 @@
+import CompanyScreen from "../Screens/company/CompanyScreen";
+import ComapnyDetailsScreen from "../Screens/company/CompanyDetailsScreen";
+import DepartmentsScreen from "../Screens/company/DepartmentsScreen";
+import EmployeesScreen from "../Screens/company/EmployeesScreen";
+import VehiclesScreen from "../Screens/vehicle/VehiclesScreen";
+import ParkingsScreen from "../Screens/vehicle/ParkingsScreen";
 import LandingScreen from "../Screens/LandingScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import RegisterScreen from "../Screens/RegisterScreen";
@@ -5,11 +11,6 @@ import CompanyRegScreen from "../Screens/CompanyRegScreen";
 import HomeScreen from "../Screens/HomeScreen";
 import CompanyAdminScreen from "../Screens/CompanyAdminScreen";
 import BookingScreen from "../Screens/BookingScreen";
-import CompanyScreen from "../Screens/company/CompanyScreen";
-import DepartmentsScreen from "../Screens/company/DepartmentsScreen";
-import EmployeesScreen from "../Screens/company/EmployeesScreen";
-import VehiclesScreen from "../Screens/vehicle/VehiclesScreen";
-import ParkingsScreen from "../Screens/vehicle/ParkingsScreen";
 
 export const navbarItems = [
   //   {
@@ -30,7 +31,12 @@ export const links = [
   {
     path: "/companies",
     component: CompanyScreen,
-    permissions: ["employee", "company", "admin"],
+    permissions: ["company", "admin"],
+  },
+  {
+    path: "/company/details",
+    component: ComapnyDetailsScreen,
+    permissions: ["company", "admin"],
   },
   {
     path: "/departments",
