@@ -161,6 +161,28 @@ ul {
   padding-bottom: 2rem;
 }
 
+.fr {
+  display: flex;
+}
+
+.frcc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fc {
+  display: flex;
+  flex-direction: row;
+}
+
+.fccc {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Navbar */
 .navbar {
   /* background-color: var(--primary); */
