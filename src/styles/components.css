@@ -185,8 +185,35 @@
   row-gap: 0.5rem;
 } */
 
-/* Tabs */
+/* Details Info */
+.detailsInfoScreen {
+  display: flex;
+  flex-wrap: wrap;
+}
 
-.tabsColor {
-  color: yellow;
+.detailsInfoScreen .detailsInfoImage {
+  /* padding: 0; */
+  /* margin: 0; */
+  color: var(--primary-darker);
+  border: none;
+  background: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.detailsInfoScreen .container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 33%;
+}
+
+.detailsInfoScreen .key {
+  min-width: 10rem;
+  color: var(--primary-darker);
+  font-size: 1.5rem;
+}
+
+.detailsInfoScreen .value {
+  min-width: 10rem;
+  font-size: 1.5rem;
 }
