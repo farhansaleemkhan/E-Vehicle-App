@@ -3,6 +3,7 @@ import { Tabs } from "antd";
 
 import Table from "../../Components/Table";
 import DetailsContainer from "../../Components/DetailsContainer";
+import DetailsIcon from "../../Components/DetailsIcon";
 import DropdownSearhable from "../../Components/DropdownSearchable";
 import {
   allCompaniesColumns,
@@ -82,7 +83,6 @@ export function SearchCompany() {
   return (
     <>
       <div className="allCompaniesScreen">
-        {/* {currentUser.type === "admin" && ( */}
         <DetailsContainer title="Search Company by Username:" showDropdown>
           <div style={{ margin: "2rem 0" }}>
             <DropdownSearhable
@@ -100,7 +100,6 @@ export function SearchCompany() {
             <Table tableColumns={allCompaniesColumns} tableBody={searchedCompany} />
           </div>
         </DetailsContainer>
-        {/* )} */}
       </div>
     </>
   );
@@ -118,7 +117,11 @@ export function AllCompanies() {
       const response = await companyService.getCompanies();
 
       let tableBodyData = response.data.map((item) => ({
-        id: item._id,
+        id: {
+          componentName: DetailsIcon,
+          value: item._id,
+          handler: handleViewDetails,
+        },
         username: item.userId.username,
         fullName: item.userId.fullName,
         email: item.userId.email,
@@ -131,16 +134,19 @@ export function AllCompanies() {
     } catch (error) {}
   };
 
+  const handleViewDetails = (data) => {
+    const url = `/company/details?id=${data?.id?.value}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <>
       <div className="allCompaniesScreen">
-        {/* {currentUser.type === "admin" && ( */}
         <DetailsContainer title="All Companies:" showDropdown>
           <div className="table-container">
             <Table tableColumns={allCompaniesColumns} tableBody={allCompanies} />
           </div>
         </DetailsContainer>
-        {/* )} */}
       </div>
     </>
   );
