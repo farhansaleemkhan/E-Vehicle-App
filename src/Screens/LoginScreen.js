@@ -1,25 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Loader from "../Components/Loader";
-import { showFailureToaster } from "../utils/toaster";
 import Error from "../Components/Error";
+import { showFailureToaster } from "../utils/toaster";
 import { auth } from "../services/authService";
-import { UserContext } from "../context/UserContext";
-import { companyService } from "../services/company/companyService";
-import { setLocalStorageItem } from "../utils/localStorage";
+import { redirect } from "../utils/redirect";
 
 const LoginScreen = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-  const { dispatch } = useContext(UserContext);
-  const navigate = useNavigate();
 
-  // TODO: replace this logic, use authcontext instead
   useEffect(() => {
-    if (auth.getCurrentUserDetails()) navigate("/");
+    // if (auth.getCurrentUserDetails()) navigate("/");
+    if (auth.getCurrentUserDetails()) redirect();
   }, [user]);
 
   const handleChange = (e) => {
@@ -35,15 +31,12 @@ const LoginScreen = () => {
     if (error) return showFailureToaster(error.message);
 
     try {
-      const isLogin = await auth.login({ ...user });
-      if (isLogin) navigate("/companies");
+      await auth.login({ ...user });
+      // const isLogin = await auth.login({ ...user });
+      // if (isLogin) navigate("/companies");
 
-      const userDetails = await auth.getCurrentUserDetails();
-      console.log("userDetails", userDetails);
-      setLocalStorageItem("userType", userDetails.type);
-      // dispatch({ type: "LOGIN", payload: userDetails });
-      // const companyDetails = await companyService.getCompanies("", userDetails._id);
-      // dispatch({ type: "ADD_COMPANY", payload: companyDetails.data[0] });
+      // const userDetails = await auth.getCurrentUserDetails();
+      // setLocalStorageItem("userType", userDetails.type);
 
       // setUser({ name: "", email: "", password: "", userType: "" });
     } catch (error) {}
