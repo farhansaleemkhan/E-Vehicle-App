@@ -55,8 +55,10 @@ export default function Register() {
     if (error) return showFailureToaster(error.message);
 
     try {
-      const isCreated = await companyService.addNewCompany({ ...comapny });
-      if (isCreated) navigate("/");
+      // const isCreated = await companyService.addNewCompany({ ...comapny });
+      // if (isCreated) navigate("/");
+
+      await companyService.addNewCompany({ ...comapny });
     } catch (error) {}
   };
 
@@ -107,7 +109,6 @@ export default function Register() {
           />
 
           <label htmlFor="fullName">Company Full Name:</label>
-
           <input
             name="fullName"
             type="text"
