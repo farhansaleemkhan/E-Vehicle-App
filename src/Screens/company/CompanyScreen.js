@@ -13,6 +13,11 @@ import {
 import { companyService } from "../../services/company/companyService";
 import { getLocalStorageItem } from "../../utils/localStorage";
 
+const handleViewDetails = (data) => {
+  const url = `/company/details?id=${data?.id?.value}`;
+  window.open(url, "_blank");
+};
+
 export default function ComapniesScreen() {
   const userType = getLocalStorageItem("userType");
 
@@ -41,7 +46,7 @@ export function SearchCompany() {
   }, []);
 
   useEffect(() => {
-    if (selectedCompany.id) fetchSpecificCompany(selectedCompany.id);
+    if (selectedCompany.id) fetchSpecificCompany(selectedCompany.id.value);
   }, [selectedCompany]);
 
   const fetchAllCompanies = async () => {
@@ -49,7 +54,11 @@ export function SearchCompany() {
       const response = await companyService.getCompanies();
 
       let tableBodyData = response.data.map((item) => ({
-        id: item._id,
+        id: {
+          componentName: DetailsIcon,
+          value: item._id,
+          handler: handleViewDetails,
+        },
         username: item.userId.username,
         fullName: item.userId.fullName,
         email: item.userId.email,
@@ -67,7 +76,11 @@ export function SearchCompany() {
       const response = await companyService.getCompanies(companyId);
 
       let tableBodyData = response.data.map((item) => ({
-        id: item._id,
+        id: {
+          componentName: DetailsIcon,
+          value: item._id,
+          handler: handleViewDetails,
+        },
         username: item.userId.username,
         fullName: item.userId.fullName,
         email: item.userId.email,
@@ -132,11 +145,6 @@ export function AllCompanies() {
 
       setAllCompanies(tableBodyData);
     } catch (error) {}
-  };
-
-  const handleViewDetails = (data) => {
-    const url = `/company/details?id=${data?.id?.value}`;
-    window.open(url, "_blank");
   };
 
   return (
