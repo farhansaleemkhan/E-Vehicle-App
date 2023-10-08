@@ -5,6 +5,8 @@ import { http } from "./httpService";
 import { baseURL } from "../constants/config";
 import { showFailureToaster, showSuccessToaster } from "../utils/toaster";
 import { getLocalStorageItem, removeLocalStorageItem, setLocalStorageItem } from "../utils/localStorage";
+import { redirect } from "../utils/redirect";
+import { companyService } from "./company/companyService";
 
 const loginApiEndpoint = baseURL + "auth";
 const tokenKey = "token";
@@ -24,8 +26,21 @@ async function login(user) {
   try {
     const response = await http.post(loginApiEndpoint, { ...user });
     setLocalStorageItem(tokenKey, response.data.jwt);
+
+    const userDetails = await auth.getCurrentUserDetails();
+    setLocalStorageItem("userType", userDetails.type);
+
+    if (userDetails.type === "company") {
+      const companyDetails = await companyService.getCompanies("", userDetails._id);
+      setLocalStorageItem("companyId", companyDetails.data[0]._id);
+    }
+
     showSuccessToaster("Successfuly Logged In!");
-    return true;
+
+    setTimeout(() => {
+      return redirect();
+    }, 1000);
+    // return true;
   } catch (err) {
     showFailureToaster(err.data.message);
     return false;
@@ -33,7 +48,8 @@ async function login(user) {
 }
 
 function logout() {
-  removeLocalStorageItem(tokenKey);
+  // removeLocalStorageItem(tokenKey);
+  localStorage.clear();
   window.location = "/login";
   return;
 }
