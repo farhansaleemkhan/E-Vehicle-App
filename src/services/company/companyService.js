@@ -4,6 +4,7 @@ import { baseURL } from "../../constants/config";
 import { showFailureToaster, showSuccessToaster } from "../../utils/toaster";
 import { setLocalStorageItem } from "../../utils/localStorage";
 import { auth } from "../authService";
+import { redirect } from "../../utils/redirect";
 
 const companyApiEndpoint = baseURL + "companies";
 
@@ -26,26 +27,28 @@ const companySchema = Joi.object({
 
 async function addNewCompany(company) {
   try {
-    const response = await http.post(companyApiEndpoint, { ...company });
+    await http.post(companyApiEndpoint, { ...company });
     showSuccessToaster("Successfuly created new company!");
 
-    return true;
+    redirect();
+    return;
   } catch (err) {
     showFailureToaster(err.data.errorMessage);
     return false;
   }
 }
 
-// async function getMyConpanyDetails() {
-//   try {
-//     http.setJwt(auth.getJwt());
-//     return await http.get(companyApiEndpoint + "/me");
-//   } catch (err) {
-//     showFailureToaster(err.data.errorMessage);
-//     return false;
-//   }
-// }
+async function getConpanyDetails() {
+  try {
+    http.setJwt(auth.getJwt());
+    return await http.get(companyApiEndpoint + "/me");
+  } catch (err) {
+    showFailureToaster(err.data.errorMessage);
+    return false;
+  }
+}
 
+// TODO: this will return details of all entites attached to company
 // async function companyDetails(id) {
 //   try {
 //     const response = await http.get(companyApiEndpoint + "/details/" + id);
@@ -73,7 +76,7 @@ async function getCompanies(companyId, userId) {
 export const companyService = {
   companySchema,
   addNewCompany,
-  //  getMyConpanyDetails,
+  getConpanyDetails,
   getCompanies,
   //  companyDetails,
 };
