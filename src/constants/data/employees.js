@@ -1,3 +1,11 @@
+import {
+  AddEmployeeForAdmin,
+  AddEmployeeForCompanyOwner,
+  AllEmployees,
+  AllEmployeesForCompanyOwner,
+  SearchEmployee,
+} from "../../Screens/company/EmployeesScreen";
+
 export const allEmployeesColumns = [
   {
     // id: 1,
@@ -52,5 +60,36 @@ export const allEmployeesColumns = [
     name: "Country",
     value: "Country",
     class: { width: "7rem", minWidth: "7rem" },
+  },
+];
+
+export const employeeScreenTabsForAdmin = [
+  {
+    key: "1",
+    label: <h4>Search Employee</h4>,
+    children: <SearchEmployee />,
+  },
+  {
+    key: "2",
+    label: <h4>Add Employee</h4>,
+    children: <AddEmployeeForAdmin />,
+  },
+  {
+    key: "3",
+    label: <h4>All Employees</h4>,
+    children: <AllEmployees />,
+  },
+];
+
+export const employeeScreenTabsForCompanyOwner = [
+  {
+    key: "1",
+    label: <h4>Add Employee</h4>,
+    children: <AddEmployeeForCompanyOwner />,
+  },
+  {
+    key: "2",
+    label: <h4>All Employees</h4>,
+    children: <AllEmployeesForCompanyOwner />,
   },
 ];
