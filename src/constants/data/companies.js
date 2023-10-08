@@ -59,19 +59,13 @@ export const companyScreenTabsForAdmin = [
   },
 ];
 
+export const companyScreenTabsForCompanyOwner = [];
+
 export const companyDetailsScreenTabsForAdmin = [
   {
     key: "1",
     label: <h4>Company Details</h4>,
     children: <CompanyDetails />,
-  },
-];
-
-export const companyScreenTabsForCompanyOwner = [
-  {
-    key: "1",
-    label: <h4>Search Company</h4>,
-    children: <SearchCompany />,
   },
 ];
 
