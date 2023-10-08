@@ -11,7 +11,7 @@ function AppRoutes() {
         return (
           <Route
             path={route.path}
-            {...route.others}
+            {...route?.others}
             element={
               <PrivateRoutes permissions={route.permissions}>{<route.component />}</PrivateRoutes>
             }

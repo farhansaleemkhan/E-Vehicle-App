@@ -20,7 +20,7 @@ const Sidebar = () => {
     ];
   } else if (userType === "company") {
     sidebarItems = [
-      { id: 1, name: "Company", link: "/companies" },
+      { id: 1, name: "Company", link: "/company/details" },
       { id: 2, name: "Departments", link: "/departments" },
       { id: 3, name: "Employees", link: "/employees" },
       { id: 4, name: "Vehicles", link: "/vehicles" },

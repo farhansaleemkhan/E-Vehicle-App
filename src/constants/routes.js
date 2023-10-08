@@ -31,7 +31,10 @@ export const links = [
   {
     path: "/companies",
     component: CompanyScreen,
-    permissions: ["company", "admin"],
+    permissions: ["admin"],
+    others: {
+      exact: true,
+    },
   },
   {
     path: "/company/details",
