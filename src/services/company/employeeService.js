@@ -32,10 +32,10 @@ const employeeSchema = Joi.object({
   type: Joi.string().valid("employee", "company").required(),
 });
 
-async function addNewEmployee(user) {
+async function addEmployee(user) {
   try {
-    const response = await http.post(employeeApiEndpoint, { ...user });
-    showSuccessToaster("Successfuly created new account!");
+    await http.post(employeeApiEndpoint, { ...user });
+    showSuccessToaster("Successfuly created new employee!");
     return true;
   } catch (err) {
     showFailureToaster(err.data.errorMessage);
@@ -44,11 +44,12 @@ async function addNewEmployee(user) {
 }
 
 // employeeId is acting as query strign params, it will be automatically applied if provided
-async function getEmployees(employeeId) {
+async function getEmployees(employeeId, companyId) {
   try {
     let endpoint = employeeApiEndpoint;
-    if (employeeId) endpoint += "?";
+    if (employeeId || companyId) endpoint += "?";
     if (employeeId) endpoint += "_id=" + employeeId;
+    if (companyId) endpoint += "companyId=" + companyId;
 
     return await http.get(endpoint);
   } catch (err) {
@@ -91,7 +92,7 @@ async function getEmployees(employeeId) {
 
 export const employeeService = {
   employeeSchema,
-  addNewEmployee,
+  addEmployee,
   getEmployees,
   // getMyDetails,
   // getAllArtists,

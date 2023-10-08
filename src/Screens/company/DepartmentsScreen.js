@@ -180,8 +180,8 @@ export function AddDepartmentsForCompanyOwner() {
   };
 
   return (
-    <>
-      <div className="allCompaniesScreen">
+    <div className="allCompaniesScreen">
+      <DetailsContainer title="Enter Info:" showDropdown>
         <div className="fr" style={{ width: "30rem" }}>
           <input
             type="text"
@@ -197,8 +197,8 @@ export function AddDepartmentsForCompanyOwner() {
             Add
           </button>
         </div>
-      </div>
-    </>
+      </DetailsContainer>
+    </div>
   );
 }
 
@@ -248,7 +248,7 @@ export function AddDepartmentsForAdmin() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="Search Departments For Specific Company:" showDropdown>
+        <DetailsContainer title="Enter Info:" showDropdown>
           <div style={{ margin: "2rem 2rem" }}>
             <DropdownSearhable
               idkey="id"
