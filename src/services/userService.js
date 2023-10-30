@@ -18,7 +18,7 @@ const newUserSchema = Joi.object({
     .required()
     .email({ tlds: { allow: false } }),
   password: Joi.string()
-    .regex(/^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8}$/)
+    .regex(/^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/)
     .required()
     .messages({
       "string.pattern.base": "Password must be atleast 8 characters long and alphanumeic",

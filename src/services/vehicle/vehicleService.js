@@ -6,6 +6,9 @@ import { showFailureToaster, showSuccessToaster } from "../../utils/toaster";
 const vehicleApiEndpoint = baseURL + "vehicles";
 
 const vehicleSchema = Joi.object({
+  companyId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required(),
   manufacturer: Joi.string().min(0).max(30).required(),
   model: Joi.string().min(0).max(30).required(),
   licensePlateNumber: Joi.string().min(0).max(20).required(),
@@ -35,11 +38,10 @@ async function addVehicle(vehicle) {
 }
 
 // vehicleId is acting as query strign params, it will be automatically applied if provided
-async function getVehicles(vehicleId) {
+async function getVehicles(queryString) {
   try {
     let endpoint = vehicleApiEndpoint;
-    if (vehicleId) endpoint += "?";
-    if (vehicleId) endpoint += "_id=" + vehicleId;
+    if (queryString) endpoint = endpoint + "?" + queryString;
 
     return await http.get(endpoint);
   } catch (err) {
