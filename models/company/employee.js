@@ -36,13 +36,15 @@ function validateEmployee(employee) {
     assignedVehicleId: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
 
     // this will be used to create User first, and then this userId will be assigned to employee automatically
-    name: Joi.string().min(2).max(50).required(),
+    username: Joi.string().min(2).max(50).required(),
+    fullName: Joi.string().min(2).max(50).required(),
     email: Joi.string().min(4).max(255).required().email(),
-    password: Joi.string().min(8).max(255).required(),
+    password: Joi.string().min(4).max(255).required(),
     phone: Joi.string().min(4).max(128).required(),
     address: Joi.string().min(5).max(1024).required(),
     country: Joi.string().min(2).max(128).required(),
     city: Joi.string().min(2).max(128).required(),
+    type: Joi.string().valid("employee", "company").required(),
   };
 
   return Joi.validate(employee, schema);
