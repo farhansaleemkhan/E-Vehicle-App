@@ -43,7 +43,7 @@ async function addEmployee(user) {
   }
 }
 
-// employeeId is acting as query strign params, it will be automatically applied if provided
+// employeeId and companyId are acting as query strign params, it will be automatically applied if provided
 async function getEmployees(employeeId, companyId) {
   try {
     let endpoint = employeeApiEndpoint;

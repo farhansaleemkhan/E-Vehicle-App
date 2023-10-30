@@ -1,3 +1,11 @@
+import {
+  AddVehicleForAdmin,
+  AddVehicleForCompanyOwner,
+  AllVehicles,
+  AllVehiclesForCompanyOwner,
+  SearchVehicle,
+} from "../../Screens/vehicle/VehiclesScreen";
+
 export const allVehiclesColumns = [
   {
     name: "Id",
@@ -58,5 +66,41 @@ export const allVehiclesColumns = [
     name: "is Working Fine?",
     value: "is Working Fine?",
     class: { width: "14rem", minWidth: "14rem" },
+  },
+  {
+    name: "Company",
+    value: "Company",
+    class: { width: "10rem", minWidth: "10rem" },
+  },
+];
+
+export const vehicleScreenTabsForAdmin = [
+  {
+    key: "1",
+    label: <h4>Search Vehicle</h4>,
+    children: <SearchVehicle />,
+  },
+  {
+    key: "2",
+    label: <h4>Add Vehicle</h4>,
+    children: <AddVehicleForAdmin />,
+  },
+  {
+    key: "3",
+    label: <h4>All Vehicle</h4>,
+    children: <AllVehicles />,
+  },
+];
+
+export const vehicleScreenTabsForCompanyOwner = [
+  {
+    key: "1",
+    label: <h4>Add Vehicle</h4>,
+    children: <AddVehicleForCompanyOwner />,
+  },
+  {
+    key: "2",
+    label: <h4>All Vehicles</h4>,
+    children: <AllVehiclesForCompanyOwner />,
   },
 ];

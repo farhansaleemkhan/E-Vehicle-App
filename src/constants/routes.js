@@ -12,13 +12,7 @@ import HomeScreen from "../Screens/HomeScreen";
 import CompanyAdminScreen from "../Screens/CompanyAdminScreen";
 import BookingScreen from "../Screens/BookingScreen";
 
-export const navbarItems = [
-  //   {
-  //     name: "Home",
-  //     path: "/",
-  //     permissions: ["buyer", "seller"],
-  //   },
-];
+export const navbarItems = [];
 
 export const links = [
   // {
