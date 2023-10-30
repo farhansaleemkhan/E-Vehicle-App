@@ -58,7 +58,7 @@ const userSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["employee", "company"],
+    enum: ["admin", "employee", "company"],
   },
 });
 
@@ -83,7 +83,7 @@ function validateUser(user) {
     username: Joi.string().min(2).max(50).required(),
     fullName: Joi.string().min(2).max(50).required(),
     email: Joi.string().min(4).max(255).required().email(),
-    password: Joi.string().min(4).max(255).required(),
+    password: Joi.string().min(8).max(255).required(),
     phone: Joi.string().min(4).max(128).required(),
     address: Joi.string().min(5).max(1024).required(),
     country: Joi.string().min(2).max(128).required(),
