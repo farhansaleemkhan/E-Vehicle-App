@@ -3,9 +3,21 @@ const router = express.Router();
 
 const { Vehicle, validate } = require("../../models/vehicle/vehicle");
 
+// if we send query string parameters fromc client-side, it will automatically apply it as well
 router.get("/", async (req, res) => {
   try {
-    const vehicles = await Vehicle.find();
+    const vehicles = await Vehicle.find(req.query)
+      .populate({
+        path: "fuelType",
+      })
+      .populate({
+        path: "vehicleType",
+      })
+      .populate({
+        path: "companyId",
+        populate: "userId",
+      });
+
     return res.json(vehicles);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -61,6 +73,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// TODO: when a vehicle is deleted, the respective parking should be deleted, and unassingn the vehicle if assigned to any employee, also remove it from employee record
 router.delete("/:id", async (req, res) => {
   try {
     // TODO: change here as well: req.params.id

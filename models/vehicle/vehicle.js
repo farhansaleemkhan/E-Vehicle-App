@@ -2,6 +2,11 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 
 const vehicleSchema = new mongoose.Schema({
+  companyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Company",
+    required: true,
+  },
   manufacturer: {
     type: String,
     required: true,
@@ -66,6 +71,9 @@ const Vehicle = mongoose.model("Vehicle", vehicleSchema);
 
 function validateVehicle(vehicle) {
   const schema = {
+    companyId: Joi.string()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .required(),
     manufacturer: Joi.string().min(0).max(30).required(),
     model: Joi.string().min(0).max(30).required(),
     licensePlateNumber: Joi.string().min(0).max(20).required(),
