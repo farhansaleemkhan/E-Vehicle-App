@@ -6,7 +6,15 @@ const { Department, validate } = require("../../models/company/department");
 
 router.get("/", async (req, res) => {
   try {
-    const departments = await Department.find();
+    // if we send query string parameters fromc client-side, it will automatically apply it as well
+    const departments = await Department.find(req.query).populate({
+      path: "companyId",
+      populate: {
+        path: "userId",
+        select: "-password",
+      },
+    });
+
     return res.json(departments);
   } catch (error) {
     return res.status(500).json({ message: error.message });
