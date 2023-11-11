@@ -4,10 +4,13 @@ const _ = require("lodash");
 
 const { Company, validate } = require("../../models/company/company");
 const { createUser } = require("../users");
+const { companyService } = require("../../services/company/company");
 
+// if we send query string parameters from client-side, it will automatically apply it as well
 router.get("/", async (req, res) => {
   try {
-    const companies = await Company.find();
+    // const companies = await Company.find().populate("userId", "-password");
+    const companies = await companyService.getAllCompanies(req.query);
     return res.json(companies);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -26,6 +29,20 @@ router.get("/:id", async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
+
+// TODO: this will return details of all entites attached to company
+// router.get("/details/:id", async (req, res) => {
+//   try {
+//     const company = await Company.find({ _id: req.params.id });
+//     if (!company) {
+//       return res.status(404).json({ message: "Company not found for given id." });
+//     }
+
+//     return res.json(company);
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+// });
 
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
