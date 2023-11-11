@@ -32,6 +32,16 @@ const employeeSchema = Joi.object({
   type: Joi.string().valid("employee", "company").required(),
 });
 
+const vehcileAssignSchema = Joi.object({
+  vehicleId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required(),
+  employeeId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required(),
+  assign: Joi.boolean(),
+});
+
 async function addEmployee(user) {
   try {
     await http.post(employeeApiEndpoint, { ...user });
@@ -52,6 +62,25 @@ async function getEmployees(employeeId, companyId) {
     if (companyId) endpoint += "companyId=" + companyId;
 
     return await http.get(endpoint);
+  } catch (err) {
+    showFailureToaster(err.data.errorMessage);
+    return false;
+  }
+}
+
+async function getEmployees1(queryParams = "") {
+  try {
+    return await http.get(employeeApiEndpoint + queryParams);
+  } catch (err) {
+    showFailureToaster(err.data.errorMessage);
+    return false;
+  }
+}
+
+async function assignVehicle(data = {}) {
+  try {
+    await http.post(employeeApiEndpoint + "/assign-vehicle", data);
+    showSuccessToaster("Successfuly assigned vehicle!");
   } catch (err) {
     showFailureToaster(err.data.errorMessage);
     return false;
@@ -92,8 +121,11 @@ async function getEmployees(employeeId, companyId) {
 
 export const employeeService = {
   employeeSchema,
+  vehcileAssignSchema,
   addEmployee,
   getEmployees,
+  getEmployees1,
+  assignVehicle,
   // getMyDetails,
   // getAllArtists,
   // employeeDetails,

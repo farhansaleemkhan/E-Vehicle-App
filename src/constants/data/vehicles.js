@@ -3,6 +3,8 @@ import {
   AddVehicleForCompanyOwner,
   AllVehicles,
   AllVehiclesForCompanyOwner,
+  AssignVehicleForAdmin,
+  AssignVehicleForCompanyOwner,
   SearchVehicle,
 } from "../../Screens/vehicle/VehiclesScreen";
 
@@ -90,6 +92,11 @@ export const vehicleScreenTabsForAdmin = [
     label: <h4>All Vehicle</h4>,
     children: <AllVehicles />,
   },
+  {
+    key: "4",
+    label: <h4>Assign Vehicle</h4>,
+    children: <AssignVehicleForAdmin />,
+  },
 ];
 
 export const vehicleScreenTabsForCompanyOwner = [
@@ -102,5 +109,10 @@ export const vehicleScreenTabsForCompanyOwner = [
     key: "2",
     label: <h4>All Vehicles</h4>,
     children: <AllVehiclesForCompanyOwner />,
+  },
+  {
+    key: "3",
+    label: <h4>Assign Vehicle</h4>,
+    children: <AssignVehicleForCompanyOwner />,
   },
 ];
