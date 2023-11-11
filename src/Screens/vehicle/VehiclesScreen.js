@@ -15,6 +15,7 @@ import { showFailureToaster } from "../../utils/toaster";
 import { vehicleTypesService } from "../../services/vehicle/vehicleTypeService";
 import { fuelTypesService } from "../../services/vehicle/fuelTypeService";
 import { companyService } from "../../services/company/companyService";
+import { employeeService } from "../../services/company/employeeService";
 
 export default function VehiclesScreen() {
   const userType = getLocalStorageItem("userType");
@@ -659,6 +660,187 @@ export function AddVehicleForAdmin() {
             </div>
           </div>
         </form>
+      </DetailsContainer>
+    </div>
+  );
+}
+
+export function AssignVehicleForCompanyOwner() {
+  const [allEmployees, setAllEmployees] = useState([]);
+  const [allVehicles, setAllVehicles] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedVehicle, setSelectedVehicle] = useState("");
+  const companyId = getLocalStorageItem("companyId");
+
+  useEffect(() => {
+    fetchAllEmployees(`?companyId=${companyId}&assignedVehicle=false`);
+    fetchAllVehicles(`companyId=${companyId}&isAssigned=false`);
+  }, []);
+
+  const fetchAllEmployees = async (queryParams = "") => {
+    try {
+      const response = await employeeService.getEmployees1(queryParams);
+      let tableBodyData = response.data.map((item) => ({
+        id: item._id,
+        name: item.userId.username,
+      }));
+
+      setAllEmployees(tableBodyData);
+    } catch (error) {}
+  };
+
+  const fetchAllVehicles = async (queryParams = "") => {
+    try {
+      const response = await vehicleService.getVehicles(queryParams);
+      let tableBodyData = response.data.map((item) => ({
+        id: item._id,
+        name: item.licensePlateNumber,
+      }));
+
+      setAllVehicles(tableBodyData);
+    } catch (error) {}
+  };
+
+  const handleSubmit = async () => {
+    try {
+      let payload = { vehicleId: selectedVehicle.id, employeeId: selectedEmployee.id, assign: true };
+
+      const { error } = employeeService.vehcileAssignSchema.validate(payload);
+      if (error) return showFailureToaster(error.message);
+
+      await employeeService.assignVehicle(payload);
+    } catch (error) {}
+  };
+
+  return (
+    <div className="allCompaniesScreen">
+      <DetailsContainer title="Enter Info:" showDropdown>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            minHeight: "13rem",
+            width: "14.5rem",
+          }}
+        >
+          <DropdownSearhable
+            idkey="id"
+            displayKey="name"
+            placeholder="Select Employee."
+            list={allEmployees}
+            selectedItem={selectedEmployee}
+            setSelectedItem={setSelectedEmployee}
+          ></DropdownSearhable>
+
+          <DropdownSearhable
+            idkey="id"
+            displayKey="name"
+            placeholder="Select Vehicle."
+            list={allVehicles}
+            selectedItem={selectedVehicle}
+            setSelectedItem={setSelectedVehicle}
+          ></DropdownSearhable>
+
+          <button
+            className="btn buttonDarker "
+            type="submit"
+            style={{ alignSelf: "flex-end" }}
+            onClick={handleSubmit}
+          >
+            Add
+          </button>
+        </div>
+      </DetailsContainer>
+    </div>
+  );
+}
+
+export function AssignVehicleForAdmin() {
+  const [allEmployees, setAllEmployees] = useState([]);
+  const [allVehicles, setAllVehicles] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedVehicle, setSelectedVehicle] = useState("");
+
+  useEffect(() => {
+    fetchAllEmployees(`?assignedVehicle=false`);
+    fetchAllVehicles(`isAssigned=false`);
+  }, []);
+
+  const fetchAllEmployees = async (queryParams = "") => {
+    try {
+      const response = await employeeService.getEmployees1(queryParams);
+      let tableBodyData = response.data.map((item) => ({
+        id: item._id,
+        name: item.userId.username,
+      }));
+
+      setAllEmployees(tableBodyData);
+    } catch (error) {}
+  };
+
+  const fetchAllVehicles = async (queryParams = "") => {
+    try {
+      const response = await vehicleService.getVehicles(queryParams);
+      let tableBodyData = response.data.map((item) => ({
+        id: item._id,
+        name: item.licensePlateNumber,
+      }));
+
+      setAllVehicles(tableBodyData);
+    } catch (error) {}
+  };
+
+  const handleSubmit = async () => {
+    try {
+      let payload = { vehicleId: selectedVehicle.id, employeeId: selectedEmployee.id, assign: true };
+
+      const { error } = employeeService.vehcileAssignSchema.validate(payload);
+      if (error) return showFailureToaster(error.message);
+
+      await employeeService.assignVehicle(payload);
+    } catch (error) {}
+  };
+
+  return (
+    <div className="allCompaniesScreen">
+      <DetailsContainer title="Enter Info:" showDropdown>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            minHeight: "13rem",
+            width: "14.5rem",
+          }}
+        >
+          <DropdownSearhable
+            idkey="id"
+            displayKey="name"
+            placeholder="Select Employee."
+            list={allEmployees}
+            selectedItem={selectedEmployee}
+            setSelectedItem={setSelectedEmployee}
+          ></DropdownSearhable>
+
+          <DropdownSearhable
+            idkey="id"
+            displayKey="name"
+            placeholder="Select Vehicle."
+            list={allVehicles}
+            selectedItem={selectedVehicle}
+            setSelectedItem={setSelectedVehicle}
+          ></DropdownSearhable>
+
+          <button
+            className="btn buttonDarker "
+            type="submit"
+            style={{ alignSelf: "flex-end" }}
+            onClick={handleSubmit}
+          >
+            Add
+          </button>
+        </div>
       </DetailsContainer>
     </div>
   );

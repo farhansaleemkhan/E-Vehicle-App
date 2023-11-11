@@ -22,7 +22,6 @@ function showToast(type) {
 
 axiosInstance.interceptors.request.use(
   (request) => {
-    console.log("request ", request);
     return request;
   },
   (error) => {
@@ -33,7 +32,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     showToast("success");
-    console.log("resss ", response);
     return response;
   },
   (error) => {
