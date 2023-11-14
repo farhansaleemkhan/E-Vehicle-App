@@ -9,20 +9,26 @@ import { parkingAreaService } from "../../services/vehicle/parkingAreaService";
 import { parkingAreasColumns, parkingColumns } from "../../constants/data/parkings";
 import { parkingService } from "../../services/vehicle/parkingService";
 import { AuthContext } from "../../context/AuthContext";
+import ParkVehicle from "../HomeScreen";
 
 const items = [
   {
     key: "1",
+    label: <h4>Park Vehicle</h4>,
+    children: <ParkVehicle />,
+  },
+  {
+    key: "2",
     label: <h4>Current Parkings</h4>,
     children: <CurrentParkings />,
   },
   {
-    key: "2",
+    key: "3",
     label: <h4>Search Parking Area</h4>,
     children: <SearchParkingArea />,
   },
   {
-    key: "3",
+    key: "4",
     label: <h4>All Parking Areas</h4>,
     children: <AllParkingAreas />,
   },

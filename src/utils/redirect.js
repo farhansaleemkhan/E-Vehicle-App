@@ -6,9 +6,10 @@ export const redirect = () => {
   const companyId = getLocalStorageItem("companyId");
 
   if (user) {
-    if (user.type === "admin") return (window.location = "/companies");
-    else if (user.type === "company") return (window.location = `/company/details?id=${companyId}`);
-    else if (user.type === "employee") return (window.location = "/vehicles");
+    return (window.location = "/parkings");
+    // if (user.type === "admin") return (window.location = "/parkings");
+    // else if (user.type === "company") return (window.location = `/company/details?id=${companyId}`);
+    // else if (user.type === "employee") return (window.location = "/vehicles");
   }
 
   return (window.location = "/login");

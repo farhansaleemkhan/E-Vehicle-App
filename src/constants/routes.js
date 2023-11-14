@@ -8,13 +8,18 @@ import LandingScreen from "../Screens/LandingScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import RegisterScreen from "../Screens/RegisterScreen";
 import CompanyRegScreen from "../Screens/CompanyRegScreen";
-import HomeScreen from "../Screens/HomeScreen";
+import ParkVehicle from "../Screens/HomeScreen";
 import CompanyAdminScreen from "../Screens/CompanyAdminScreen";
 import BookingScreen from "../Screens/BookingScreen";
 
 export const navbarItems = [];
 
 export const links = [
+  {
+    path: "/parkings",
+    component: ParkingsScreen,
+    permissions: ["employee", "company", "admin"],
+  },
   // {
   //   path: "/",
   //   component: LandingScreen,
@@ -50,15 +55,11 @@ export const links = [
     component: VehiclesScreen,
     permissions: ["employee", "company", "admin"],
   },
-  {
-    path: "/parkings",
-    component: ParkingsScreen,
-    permissions: ["employee", "company", "admin"],
-  },
+
   //
   {
     path: "/home",
-    component: HomeScreen,
+    component: ParkVehicle,
     permissions: ["employee", "company", "admin"],
   },
 
