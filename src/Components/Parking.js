@@ -2,48 +2,52 @@ import React, { useState } from "react";
 import { Button, Modal, Carousel } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Parking = ({ parking , fromDate , toDate }) => {
+const Parking = ({ parking, fromDate, toDate }) => {
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
+
+  console.log("parking1 ", parking);
+
   return (
     <div className="row shadow">
       <div className="col-md-4">
-        <img src={parking.image[0]} alt="room" className="smallimg" />
+        {/* <img src={parking.image[0]} alt="room" className="smallimg" /> */}
       </div>
       <div className="col-md-7">
         <h1>{parking.name}</h1>
         <b>
-            <p>Rent Per Day: {parking.rentperday}</p>
-          {/* <p>Max Count: {parking.maxcount}</p> */}
-          <p>Phone Number: {parking.phonenumber}</p>
+          {/* <p>Rent Per Day: {parking.rentperday}</p>
+          <p>Max Count: {parking.maxcount}</p>
+          <p>Phone Number: {parking.phonenumber}</p> */}
+          <p>Name: {parking?.name}</p>
+          <p>Total Slots: {parking?.totalSlots}</p>
+          <p>Booked Slots: {parking?.bookedSlots}</p>
           <p>Type: {parking.type}</p>
         </b>
         <div style={{ float: "right" }}>
-          {(fromDate && toDate) && (
-            <Link to={`/book/${parking._id}/${fromDate}/${toDate}`}>
-            <button className="btn btn-primary m-2">Book Now</button>
-            </Link>
-          )}
-          <button className="btn btn-dark" onClick={handleShow}>
+          {/* {fromDate && toDate && ( */}
+          <Link to={`/book/${parking._id}/${fromDate}/${toDate}`}>
+            <button className="btn btn-primary m-2">Park here</button>
+          </Link>
+          {/* )} */}
+          {/* <button className="btn btn-dark" onClick={handleShow}>
             View Details
-          </button>
+          </button> */}
         </div>
       </div>
-      <Modal show={show} onHide={handleClose} size='lg'>
+      {/* <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{parking.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Carousel>
-            {parking.image.map((url)=>{
-                return <Carousel.Item>
-                <img
-                  className="d-block w-100 bigimg"
-                  src={url}
-                  alt="First slide"
-                />
-              </Carousel.Item>
+            {parking.image.map((url) => {
+              return (
+                <Carousel.Item>
+                  <img className="d-block w-100 bigimg" src={url} alt="First slide" />
+                </Carousel.Item>
+              );
             })}
           </Carousel>
           <p>{parking.description}</p>
@@ -53,7 +57,7 @@ const Parking = ({ parking , fromDate , toDate }) => {
             Close
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
