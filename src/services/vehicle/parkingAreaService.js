@@ -29,13 +29,13 @@ async function addParkingArea(parkingArea) {
 }
 
 // parkingAreaId is acting as query strign params, it will be automatically applied if provided
-async function getParkingAreas(parkingAreaId) {
+async function getParkingAreas(queryParams = "") {
   try {
-    let endpoint = parkingApiEndpoint;
-    if (parkingAreaId) endpoint += "?";
-    if (parkingAreaId) endpoint += "_id=" + parkingAreaId;
+    // let endpoint = ;
+    // if (queryParams="") endpoint += "?";
+    // if (queryParams="") endpoint += "?_id=" + queryParams="";
 
-    return await http.get(endpoint);
+    return await http.get(parkingApiEndpoint + queryParams);
   } catch (err) {
     showFailureToaster(err.data.errorMessage);
     return false;

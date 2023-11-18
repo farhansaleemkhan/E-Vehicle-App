@@ -33,8 +33,8 @@ const Sidebar = () => {
     ];
   } else if (userType === "employee") {
     sidebarItems = [
-      { id: 1, name: "Vehicles", link: "/vehicles" },
       { id: 2, name: "Parking", link: "/parkings" },
+      // { id: 1, name: "Vehicles", link: "/vehicles" },
     ];
   }
 
