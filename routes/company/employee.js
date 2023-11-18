@@ -6,9 +6,25 @@ const { createUser } = require("../users");
 const { Employee, validate, validateAssignVehicle } = require("../../models/company/employee");
 const { Vehicle } = require("../../models/vehicle/vehicle");
 
+// if we send query string parameters fromc client-side, it will automatically apply it as well
 router.get("/", async (req, res) => {
   try {
-    const employees = await Employee.find();
+    const employees = await Employee.find(req.query)
+      .populate({
+        path: "userId",
+        populate: {
+          path: "userId",
+          select: "-password",
+        },
+      })
+      .populate({
+        path: "companyId",
+        populate: {
+          path: "userId",
+          select: "-password",
+        },
+      });
+
     return res.json(employees);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -52,7 +68,7 @@ router.post("/", async (req, res) => {
 
     const token = user.generateAuthToken();
     let data = {
-      ..._.pick(user, ["", "name", "email"]),
+      ..._.pick(user, ["", "username", "fullName", "email", "type"]),
       ..._.pick(savedEmployee, ["_id", "companyId", "departmentId", "assignedVehicleId", "userId"]),
     };
 
@@ -78,10 +94,10 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.put("/assign-vehicle/:employeeId", async (req, res) => {
+router.post("/assign-vehicle", async (req, res) => {
   try {
-    const { employeeId } = req.params;
-    const { vehicleId, assign } = req.body;
+    // const { employeeId } = req.params;
+    const { vehicleId, employeeId, assign } = req.body;
 
     const { error } = validateAssignVehicle({ employeeId, vehicleId, assign });
     if (error) return res.status(400).json({ message: error.details[0].message });
@@ -97,6 +113,7 @@ router.put("/assign-vehicle/:employeeId", async (req, res) => {
         return res.status(409).json({ message: "Vehicle already assigned." });
 
       employee.assignedVehicleId = vehicleId;
+      employee.assignedVehicle = "true";
       await employee.save();
 
       vehicle.isAssigned = assign;
@@ -108,6 +125,7 @@ router.put("/assign-vehicle/:employeeId", async (req, res) => {
         return res.status(409).json({ message: "Vehicle is not assigned already." });
 
       employee.assignedVehicleId = null;
+      employee.assignedVehicle = "false";
       await employee.save();
 
       vehicle.isAssigned = false;
@@ -120,6 +138,7 @@ router.put("/assign-vehicle/:employeeId", async (req, res) => {
   }
 });
 
+// TODO: when an employee is deleted the respective base user should be deleted, and if vehicle is assigned that vehicle should be unassigned
 router.delete("/:id", async (req, res) => {
   try {
     // before deleting set the isAssigned property of vehicle to false if vehicle is assigned to employee that is being deleted
