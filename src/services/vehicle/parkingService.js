@@ -18,8 +18,19 @@ const findParkingsSchema = Joi.object({
   // companyId: Joi.string()
   //   .regex(/^[0-9a-fA-F]{24}$/)
   //   .required(),
-  startTime: Joi.number().min(1111111111111).max(9999999999999).required(),
-  endTime: Joi.number().min(1111111111111).max(9999999999999).required(),
+  startTime: Joi.number().min(0).max(9999999999999).required(),
+  endTime: Joi.number().min(0).max(9999999999999).required(),
+});
+
+const addParkingSchema = Joi.object({
+  employeeId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required(),
+  parkingAreaId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required(),
+  startTime: Joi.number().min(0).max(9999999999999).required(),
+  endTime: Joi.number().min(0).max(9999999999999).required(),
 });
 
 async function addParking(parking) {
@@ -56,6 +67,7 @@ async function findParkings(payload) {
 export const parkingService = {
   parkingSchema,
   findParkingsSchema,
+  addParkingSchema,
   addParking,
   getParkings,
   findParkings,
