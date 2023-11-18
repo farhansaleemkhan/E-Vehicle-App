@@ -54,6 +54,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// TODO: when a fuel type is deleted, all the respective fuel types should be deleted
 router.delete("/:id", async (req, res) => {
   try {
     const fuelType = await FuelType.findByIdAndRemove(req.params.id);

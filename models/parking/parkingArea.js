@@ -20,17 +20,22 @@ const parkingAreaSchema = new mongoose.Schema({
     min: 1,
     max: 99999999999,
   },
-  bookedSlots: {
-    type: Number,
-    min: 0,
-    max: 99999999999,
-    default: 0,
-  },
-  locationId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Location",
+  // bookedSlots: {
+  //   type: Number,
+  //   min: 0,
+  //   max: 99999999999,
+  //   default: 0,
+  // },
+  type: {
+    type: String,
     required: true,
+    enum: ["covered", "uncovered"],
   },
+  // locationId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Location",
+  //   required: true,
+  // },
 });
 
 const ParkingArea = mongoose.model("ParkingArea", parkingAreaSchema);
@@ -42,10 +47,11 @@ function validateParkingArea(parkingArea) {
       .regex(/^[0-9a-fA-F]{24}$/)
       .required(),
     totalSlots: Joi.number().min(1).max(99999999999).required(),
-    bookedSlots: Joi.number().min(0).max(99999999999),
-    locationId: Joi.string()
-      .regex(/^[0-9a-fA-F]{24}$/)
-      .required(),
+    // bookedSlots: Joi.number().min(0).max(99999999999),
+    type: Joi.string().valid("covered", "uncovered").required(),
+    // locationId: Joi.string()
+    //   .regex(/^[0-9a-fA-F]{24}$/)
+    //   .required(),
   };
 
   return Joi.validate(parkingArea, schema);

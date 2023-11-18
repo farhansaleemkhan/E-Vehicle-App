@@ -52,6 +52,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// TODO: when a location is deleted, all the respective parkingAreas will be deleted
 router.delete("/:id", async (req, res) => {
   try {
     const location = await Location.findByIdAndRemove(req.params.id);

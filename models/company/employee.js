@@ -21,6 +21,10 @@ const employeeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Vehicle",
   },
+  assignedVehicle: {
+    type: String,
+    default: "false",
+  },
 });
 
 const Employee = mongoose.model("Employee", employeeSchema);
@@ -34,6 +38,7 @@ function validateEmployee(employee) {
       .regex(/^[0-9a-fA-F]{24}$/)
       .required(),
     assignedVehicleId: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
+    assignedVehicle: Joi.string().min(3).max(5),
 
     // this will be used to create User first, and then this userId will be assigned to employee automatically
     username: Joi.string().min(2).max(50).required(),

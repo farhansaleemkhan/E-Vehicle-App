@@ -57,6 +57,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// TODO: when a vehicleType is deleted, all the respective vehicles should be deleted
 router.delete("/:id", async (req, res) => {
   try {
     const vehicleType = await VehicleType.findByIdAndRemove(req.params.id);
