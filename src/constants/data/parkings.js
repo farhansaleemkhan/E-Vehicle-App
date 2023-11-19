@@ -33,11 +33,11 @@ export const parkingAreasColumns = [
   //   value: "Booked Slots",
   //   class: { width: "12rem", minWidth: "12rem" },
   // },
-  {
-    name: "Location",
-    value: "Location",
-    class: { width: "7rem", minWidth: "7rem" },
-  },
+  // {
+  //   name: "Location",
+  //   value: "Location",
+  //   class: { width: "7rem", minWidth: "7rem" },
+  // },
   {
     name: "Company",
     value: "Company",

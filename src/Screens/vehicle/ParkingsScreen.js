@@ -122,7 +122,7 @@ export function SearchParkingAreaForAdmin() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
@@ -139,7 +139,7 @@ export function SearchParkingAreaForAdmin() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
@@ -192,7 +192,7 @@ export function AllParkingAreasForAdmin() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
@@ -484,7 +484,7 @@ export function SearchParkingAreaForCompanyOwner() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
@@ -501,7 +501,7 @@ export function SearchParkingAreaForCompanyOwner() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
@@ -567,7 +567,7 @@ export function AllParkingAreasForCompanyOwner() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
@@ -806,7 +806,7 @@ export function SearchParkingAreaForEmployee() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
@@ -823,7 +823,7 @@ export function SearchParkingAreaForEmployee() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
@@ -889,7 +889,7 @@ export function AllParkingAreasForEmployee() {
         name: item.name,
         totalSlots: item.totalSlots,
         // bookedSlots: item.bookedSlots,
-        location: "VIEW",
+        // location: "VIEW",
         belongsTo: item.belongsTo.userId.username,
       }));
 
