@@ -210,26 +210,29 @@ ul {
 }
 
 .sidebar li {
-  padding: 0.6rem;
-  margin: 0.1rem;
+  padding: 0.1rem;
+  margin: 0.2rem;
   border-radius: 0.5rem;
-  /* color: var(--primary); */
-  color: white;
   font-weight: bold;
-  /* background-color: var(--primary); */
+  color: white;
   background-color: var(--primary-darker);
   font-size: 1.3rem;
 }
 
 .sidebar li:hover {
-  background-color: white;
   color: var(--primary-darker);
+  background-color: white;
   border: 1px solid var(--primary-darker);
-  margin: 0.5rem 0.1rem;
+  list-style-type: none;
+}
+
+.sidebar .active {
+  margin: 0.1rem;
+  color: var(--primary-darker);
+  background-color: white;
 }
 
 /* Children (right side of sidebar) */
-
 .children {
   flex: 10;
   overflow-y: auto;
