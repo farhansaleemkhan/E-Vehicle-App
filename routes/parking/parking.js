@@ -126,7 +126,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const parking = await Parking.findByIdAndRemove(req.params.id);
     if (!parking) return res.status(404).json({ message: "Parking not found for given id." });
-    else await parking.remove(); // Call the remove method to trigger the pre hook
+    // else await parking.remove(); // Call the remove method to trigger the pre hook
 
     return res.json({ message: "Parking deleted successfully" });
   } catch (error) {
