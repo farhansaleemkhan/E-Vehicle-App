@@ -2,14 +2,14 @@
 .details-container {
   border: 1px solid var(--primary-darker);
   border-radius: 5px;
-  margin: 1rem 0;
+  /* margin: 1rem 0; */
 }
 
 .details-container .container1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 6rem;
+  height: 4rem;
   padding: 0 50px;
   background-color: white;
   cursor: pointer;
@@ -37,12 +37,12 @@
   display: flex;
   flex-direction: column;
   /* background-color: white; */
-  margin: 2rem;
-  box-shadow: 10px 7px 10px -5px #0000000a, 10px 7px 10px -5px #0000000a, -10px 7px 10px -5px #0000000a;
+  margin: 1rem;
+  /* box-shadow: 10px 7px 10px -5px #0000000a, 10px 7px 10px -5px #0000000a, -10px 7px 10px -5px #0000000a;
   -webkit-box-shadow: 10px 7px 10px -5px #0000000a, 10px 7px 10px -5px #0000000a,
     -10px 7px 10px -5px #0000000a;
   -moz-box-shadow: 10px 7px 10px -5px #0000000a, 10px 7px 10px -5px #0000000a,
-    -10px 7px 10px -5px #0000000a;
+    -10px 7px 10px -5px #0000000a; */
 }
 
 /* Dropdown */

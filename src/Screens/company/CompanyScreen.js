@@ -12,6 +12,7 @@ import {
 } from "../../constants/data/companies";
 import { companyService } from "../../services/company/companyService";
 import { getLocalStorageItem } from "../../utils/localStorage";
+import Error from "../../Components/Error";
 
 const handleViewDetails = (data) => {
   const url = `/company/details?id=${data?.id?.value}`;
@@ -40,6 +41,7 @@ export function SearchCompany() {
   const [allCompanies, setAllCompanies] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState([]);
   const [searchedCompany, setSearchedEmployee] = useState([]);
+  const [isListEmpty, setIsListEmpty] = useState(false);
 
   useEffect(() => {
     fetchAllCompanies();
@@ -48,6 +50,10 @@ export function SearchCompany() {
   useEffect(() => {
     if (selectedCompany.id) fetchSpecificCompany(selectedCompany.id.value);
   }, [selectedCompany]);
+
+  useEffect(() => {
+    if (isListEmpty === true) setSearchedEmployee([]);
+  }, [isListEmpty]);
 
   const fetchAllCompanies = async () => {
     try {
@@ -96,18 +102,22 @@ export function SearchCompany() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="Search Company by Username:" showDropdown>
+        <DetailsContainer title="Search Company by Name:" showDropdown>
           <div style={{ margin: "2rem 0" }}>
             <DropdownSearhable
               idkey="id"
               displayKey="username"
-              placeholder="Select Company."
+              placeholder="Click here to search."
               // style={styles.dropDown.smallDropDownWithoutBorder}
               list={allCompanies}
               selectedItem={selectedCompany}
               setSelectedItem={setSelectedCompany}
+              setIsListEmpty={setIsListEmpty}
+              isListEmpty={isListEmpty}
             ></DropdownSearhable>
           </div>
+
+          {isListEmpty && <Error message="No Data found" />}
 
           <div className="table-container">
             <Table tableColumns={allCompaniesColumns} tableBody={searchedCompany} />
@@ -150,7 +160,7 @@ export function AllCompanies() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="All Companies:" showDropdown>
+        <DetailsContainer title="" showDropdown>
           <div className="table-container">
             <Table tableColumns={allCompaniesColumns} tableBody={allCompanies} />
           </div>

@@ -6,6 +6,7 @@ import DetailsContainer from "../../Components/DetailsContainer";
 import DropdownSearhable from "../../Components/DropdownSearchable";
 import {
   allVehiclesColumns,
+  vehicleDetailsScreenTabsForEmployee,
   vehicleScreenTabsForAdmin,
   vehicleScreenTabsForCompanyOwner,
 } from "../../constants/data/vehicles";
@@ -16,6 +17,9 @@ import { vehicleTypesService } from "../../services/vehicle/vehicleTypeService";
 import { fuelTypesService } from "../../services/vehicle/fuelTypeService";
 import { companyService } from "../../services/company/companyService";
 import { employeeService } from "../../services/company/employeeService";
+import Success from "../../Components/Success";
+import Error from "../../Components/Error";
+import DetailsInfo from "../../Components/DetailsInfo";
 
 export default function VehiclesScreen() {
   const userType = getLocalStorageItem("userType");
@@ -30,7 +34,9 @@ export default function VehiclesScreen() {
         <Tabs defaultActiveKey="1" items={vehicleScreenTabsForCompanyOwner} onChange={() => {}} />
       )}
 
-      {userType === "employe" && <Tabs defaultActiveKey="1" items={[]} onChange={() => {}} />}
+      {userType === "employee" && (
+        <Tabs defaultActiveKey="1" items={vehicleDetailsScreenTabsForEmployee} onChange={() => {}} />
+      )}
     </div>
   );
 }
@@ -39,10 +45,15 @@ export function SearchVehicle() {
   const [allVehicles, setAllVehicles] = useState([]);
   const [searchedVehicle, setSearchedVehicle] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [isListEmpty, setIsListEmpty] = useState(false);
 
   useEffect(() => {
     fetchAllVehicles();
   }, []);
+
+  useEffect(() => {
+    if (isListEmpty === true) setSearchedVehicle([]);
+  }, [isListEmpty]);
 
   useEffect(() => {
     if (selectedVehicle.id) fetchSpecificVehicle(selectedVehicle.id);
@@ -65,6 +76,7 @@ export function SearchVehicle() {
         fuelGiven: item.fuelGiven,
         fuelType: item.fuelType.name,
         isWorkingFine: item.isWorkingFine === true ? "Yes" : "No",
+        company: item.companyId.userId.username,
       }));
 
       setAllVehicles(tableBodyData);
@@ -88,6 +100,7 @@ export function SearchVehicle() {
         fuelGiven: item.fuelGiven,
         fuelType: item.fuelType.name,
         isWorkingFine: item.isWorkingFine === true ? "Yes" : "No",
+        company: item.companyId.userId.username,
       }));
 
       setSearchedVehicle(tableBodyData);
@@ -96,18 +109,22 @@ export function SearchVehicle() {
 
   return (
     <div className="allCompaniesScreen">
-      <DetailsContainer title="Search vehicle by Chassis Number:" showDropdown>
+      <DetailsContainer title="Search vehicle by No Plate:" showDropdown>
         <div style={{ margin: "2rem 0" }}>
           <DropdownSearhable
             idkey="id"
             displayKey="licensePlateNumber"
-            placeholder="Select Vehicle."
+            placeholder="Click here to search."
             // style={styles.dropDown.smallDropDownWithoutBorder}
             list={allVehicles}
             selectedItem={selectedVehicle}
             setSelectedItem={setSelectedVehicle}
+            setIsListEmpty={setIsListEmpty}
+            isListEmpty={isListEmpty}
           ></DropdownSearhable>
         </div>
+
+        {isListEmpty && <Error message="No Data found" />}
 
         <div className="table-container">
           <Table tableColumns={allVehiclesColumns} tableBody={searchedVehicle} />
@@ -150,7 +167,7 @@ export function AllVehicles() {
 
   return (
     <div className="allCompaniesScreen">
-      <DetailsContainer title="All Vehicles:" showDropdown>
+      <DetailsContainer title="" showDropdown>
         <div className="table-container">
           <Table tableColumns={allVehiclesColumns} tableBody={allVehicles} />
         </div>
@@ -183,6 +200,7 @@ export function AllVehiclesForCompanyOwner() {
         fuelGiven: item.fuelGiven,
         fuelType: item.fuelType.name,
         isWorkingFine: item.isWorkingFine === true ? "Yes" : "No",
+        company: item.companyId.userId.username,
       }));
 
       setAllVehicles(tableBodyData);
@@ -191,7 +209,8 @@ export function AllVehiclesForCompanyOwner() {
 
   return (
     <div className="allCompaniesScreen">
-      <DetailsContainer title="All Vehicles:" showDropdown>
+      {/* <DetailsContainer title="All Vehicles:" showDropdown> */}
+      <DetailsContainer title="" showDropdown>
         <div className="table-container">
           <Table tableColumns={allVehiclesColumns} tableBody={allVehicles} />
         </div>
@@ -207,9 +226,9 @@ export function AddVehicleForCompanyOwner() {
     model: "",
     licensePlateNumber: "",
     chassisNumber: "",
-    isParked: false,
+    // isParked: false,
     isAssigned: false,
-    isWorkingFine: true,
+    // isWorkingFine: true,
     vehicleType: "",
     fuelType: "",
     fuelGiven: "",
@@ -282,9 +301,9 @@ export function AddVehicleForCompanyOwner() {
         model: "",
         licensePlateNumber: "",
         chassisNumber: "",
-        isParked: false,
+        // isParked: false,
         isAssigned: false,
-        isWorkingFine: true,
+        // isWorkingFine: true,
         vehicleType: "",
         fuelType: "",
         fuelGiven: "",
@@ -384,7 +403,8 @@ export function AddVehicleForCompanyOwner() {
               />
             </div>
 
-            <div style={{ margin: "2rem 0" }}>
+            <div>
+              <label>Vehicle Type:</label>
               <DropdownSearhable
                 idkey="id"
                 displayKey="name"
@@ -396,15 +416,18 @@ export function AddVehicleForCompanyOwner() {
               ></DropdownSearhable>
             </div>
 
-            <DropdownSearhable
-              idkey="id"
-              displayKey="name"
-              placeholder="Select Fuel Type."
-              // style={styles.dropDown.smallDropDownWithoutBorder}
-              list={fuelTypes}
-              selectedItem={selectedFuelType}
-              setSelectedItem={setSelectedFuelType}
-            ></DropdownSearhable>
+            <div>
+              <label>Fuel Type:</label>
+              <DropdownSearhable
+                idkey="id"
+                displayKey="name"
+                placeholder="Select Fuel Type."
+                // style={styles.dropDown.smallDropDownWithoutBorder}
+                list={fuelTypes}
+                selectedItem={selectedFuelType}
+                setSelectedItem={setSelectedFuelType}
+              ></DropdownSearhable>
+            </div>
 
             <div style={{ height: "1rem", alignSelf: "center" }}>
               <button className="btn buttonDarker " type="submit">
@@ -756,6 +779,98 @@ export function AssignVehicleForCompanyOwner() {
   );
 }
 
+// export function UnAssignVehicleForCompanyOwner() {
+//   const [allEmployees, setAllEmployees] = useState([]);
+//   // const [allVehicles, setAllVehicles] = useState([]);
+//   const [selectedEmployee, setSelectedEmployee] = useState("");
+//   const [selectedVehicle, setSelectedVehicle] = useState("");
+//   const companyId = getLocalStorageItem("companyId");
+
+//   useEffect(() => {
+//     fetchAllEmployees(`?companyId=${companyId}&assignedVehicle=true`);
+//     // fetchAllVehicles(`companyId=${companyId}&isAssigned=false`);
+//   }, []);
+
+//   const fetchAllEmployees = async (queryParams = "") => {
+//     try {
+//       const response = await employeeService.getEmployees1(queryParams);
+//       let tableBodyData = response.data.map((item) => ({
+//         id: item._id,
+//         name: item.userId.username,
+//       }));
+
+//       setAllEmployees(tableBodyData);
+//     } catch (error) {}
+//   };
+
+//   // const fetchAllVehicles = async (queryParams = "") => {
+//   //   try {
+//   //     const response = await vehicleService.getVehicles(queryParams);
+//   //     let tableBodyData = response.data.map((item) => ({
+//   //       id: item._id,
+//   //       name: item.licensePlateNumber,
+//   //     }));
+
+//   //     setAllVehicles(tableBodyData);
+//   //   } catch (error) {}
+//   // };
+
+//   const handleSubmit = async () => {
+//     try {
+//       let payload = { vehicleId: "", employeeId: selectedEmployee.id, assign: false };
+
+//       const { error } = employeeService.vehcileAssignSchema.validate(payload);
+//       if (error) return showFailureToaster(error.message);
+
+//       await employeeService.assignVehicle(payload);
+//     } catch (error) {}
+//   };
+
+//   return (
+//     <div className="allCompaniesScreen">
+//       <DetailsContainer title="Select employee to take vehicle back." showDropdown>
+//         <div
+//           style={{
+//             display: "flex",
+//             flexDirection: "column",
+//             justifyContent: "space-between",
+//             // minHeight: "13rem",
+//             rowGap: "1rem",
+//             width: "14.5rem",
+//           }}
+//         >
+//           <DropdownSearhable
+//             idkey="id"
+//             displayKey="name"
+//             placeholder="Select Employee."
+//             list={allEmployees}
+//             selectedItem={selectedEmployee}
+//             setSelectedItem={setSelectedEmployee}
+//           ></DropdownSearhable>
+
+//           {/* <DropdownSearhable
+//             idkey="id"
+//             displayKey="name"
+//             placeholder="Select Vehicle."
+//             list={allVehicles}
+//             selectedItem={selectedVehicle}
+//             setSelectedItem={setSelectedVehicle}
+//           ></DropdownSearhable> */}
+
+//           <button
+//             className="btn buttonDarker "
+//             type="submit"
+//             style={{ alignSelf: "flex-end" }}
+//             onClick={handleSubmit}
+//           >
+//             UnAssing
+//           </button>
+//         </div>
+//       </DetailsContainer>
+//     </div>
+//   );
+// }
+
 export function AssignVehicleForAdmin() {
   const [allEmployees, setAllEmployees] = useState([]);
   const [allVehicles, setAllVehicles] = useState([]);
@@ -844,4 +959,44 @@ export function AssignVehicleForAdmin() {
       </DetailsContainer>
     </div>
   );
+}
+
+export function VehicleDetailsForEmployee() {
+  const [vehicleDetails, setvehicleDetails] = useState({});
+  const employeeId = getLocalStorageItem("employeeId");
+
+  useEffect(() => {
+    fetchEmployeeDetails(employeeId);
+  }, []);
+
+  const fetchEmployeeDetails = async (id) => {
+    try {
+      const employeeDetails = await employeeService.getEmployees1(`?_id=${id}`);
+      let response = employeeDetails.data[0];
+
+      let assignedVehicleId = response.assignedVehicleId;
+      if (assignedVehicleId) {
+        let response = await vehicleService.getVehicles(`_id=${assignedVehicleId}`);
+        let data = {
+          "Vehicle Type": response.data[0].vehicleType.name,
+          Manufacturer: response.data[0].manufacturer,
+          Model: response.data[0].model,
+          "License Plate Number": response.data[0].licensePlateNumber,
+          "Chassis Number": response.data[0].chassisNumber,
+          "Is Parked": response.data[0].isParked.toString(),
+          "Fuel Given": response.data[0].fuelGiven,
+          "Fuel Consumed": response.data[0].fuelConsumed,
+          "Fuel Type": response.data[0].fuelType.name,
+        };
+
+        setvehicleDetails(data);
+      } else {
+        setvehicleDetails("");
+      }
+    } catch (error) {}
+  };
+
+  if (vehicleDetails) return <DetailsInfo obj={vehicleDetails} />;
+
+  return <h2>No vehicle assigned to me.</h2>;
 }

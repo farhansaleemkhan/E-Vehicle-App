@@ -14,6 +14,7 @@ import { getLocalStorageItem } from "../../utils/localStorage";
 import { companyService } from "../../services/company/companyService";
 import { showFailureToaster } from "../../utils/toaster";
 import { departmentService } from "../../services/company/departmentService";
+import Error from "../../Components/Error";
 
 export default function EmployeesScreen() {
   const userType = getLocalStorageItem("userType");
@@ -37,10 +38,15 @@ export function SearchEmployee() {
   const [allEmployees, setAllEmployees] = useState([]);
   const [searchedEmployee, setSearchedEmployee] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [isListEmpty, setIsListEmpty] = useState(false);
 
   useEffect(() => {
     fetchAllEmployees();
   }, []);
+
+  useEffect(() => {
+    if (isListEmpty === true) setSearchedEmployee([]);
+  }, [isListEmpty]);
 
   useEffect(() => {
     if (selectedEmployee.id) fetchSpecificEmployee(selectedEmployee.id);
@@ -88,18 +94,22 @@ export function SearchEmployee() {
 
   return (
     <div className="allCompaniesScreen">
-      <DetailsContainer title="Search Employee by Username:" showDropdown>
+      <DetailsContainer title="Search Employee by Name:" showDropdown>
         <div style={{ margin: "2rem 0" }}>
           <DropdownSearhable
             idkey="id"
             displayKey="username"
-            placeholder="Select Employee."
+            placeholder="Click here to search."
             // style={styles.dropDown.smallDropDownWithoutBorder}
             list={allEmployees}
             selectedItem={selectedEmployee}
             setSelectedItem={setSelectedEmployee}
+            setIsListEmpty={setIsListEmpty}
+            isListEmpty={isListEmpty}
           ></DropdownSearhable>
         </div>
+
+        {isListEmpty && <Error message="No Data found" />}
 
         <div className="table-container">
           <Table tableColumns={allEmployeesColumns} tableBody={searchedEmployee} />
@@ -138,7 +148,7 @@ export function AllEmployees() {
 
   return (
     <div className="allCompaniesScreen">
-      <DetailsContainer title="All Employees:" showDropdown>
+      <DetailsContainer title="" showDropdown>
         <div className="table-container">
           <Table tableColumns={allEmployeesColumns} tableBody={allEmployees} />
         </div>
@@ -176,7 +186,8 @@ export function AllEmployeesForCompanyOwner() {
 
   return (
     <div className="allCompaniesScreen">
-      <DetailsContainer title="All Employees:" showDropdown>
+      {/* <DetailsContainer title="All Employees:" showDropdown> */}
+      <DetailsContainer title="" showDropdown>
         <div className="table-container">
           <Table tableColumns={allEmployeesColumns} tableBody={allEmployees} />
         </div>

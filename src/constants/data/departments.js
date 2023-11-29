@@ -27,11 +27,11 @@ export const departmentScreenTabsForAdmin = [
     label: <h4>Search Department</h4>,
     children: <SearchDepartment />,
   },
-  {
-    key: "2",
-    label: <h4>Add Department</h4>,
-    children: <AddDepartmentsForAdmin />,
-  },
+  // {
+  //   key: "2",
+  //   label: <h4>Add Department</h4>,
+  //   children: <AddDepartmentsForAdmin />,
+  // },
   {
     key: "3",
     label: <h4>All Departments</h4>,

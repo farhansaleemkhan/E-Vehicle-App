@@ -7,6 +7,7 @@ import { showFailureToaster, showSuccessToaster } from "../utils/toaster";
 import { getLocalStorageItem, removeLocalStorageItem, setLocalStorageItem } from "../utils/localStorage";
 import { redirect } from "../utils/redirect";
 import { companyService } from "./company/companyService";
+import { employeeService } from "./company/employeeService";
 
 const loginApiEndpoint = baseURL + "auth";
 const tokenKey = "token";
@@ -33,6 +34,11 @@ async function login(user) {
     if (userDetails.type === "company") {
       const companyDetails = await companyService.getCompanies("", userDetails._id);
       setLocalStorageItem("companyId", companyDetails.data[0]._id);
+    }
+
+    if (userDetails.type === "employee") {
+      const companyDetails = await employeeService.getEmployees1(`?userId=${userDetails._id}`);
+      setLocalStorageItem("employeeId", companyDetails.data[0]._id);
     }
 
     showSuccessToaster("Successfuly Logged In!");

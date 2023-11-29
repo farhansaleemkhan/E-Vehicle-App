@@ -1,3 +1,4 @@
+import VehicleDetailsScreen, { VehicleDetails } from "../../Screens/vehicle/VehicleDetailsScreen";
 import {
   AddVehicleForAdmin,
   AddVehicleForCompanyOwner,
@@ -6,6 +7,8 @@ import {
   AssignVehicleForAdmin,
   AssignVehicleForCompanyOwner,
   SearchVehicle,
+  UnAssignVehicleForCompanyOwner,
+  VehicleDetailsForEmployee,
 } from "../../Screens/vehicle/VehiclesScreen";
 
 export const allVehiclesColumns = [
@@ -82,21 +85,21 @@ export const vehicleScreenTabsForAdmin = [
     label: <h4>Search Vehicle</h4>,
     children: <SearchVehicle />,
   },
-  {
-    key: "2",
-    label: <h4>Add Vehicle</h4>,
-    children: <AddVehicleForAdmin />,
-  },
+  // {
+  //   key: "2",
+  //   label: <h4>Add Vehicle</h4>,
+  //   children: <AddVehicleForAdmin />,
+  // },
   {
     key: "3",
-    label: <h4>All Vehicle</h4>,
+    label: <h4>All Vehicles</h4>,
     children: <AllVehicles />,
   },
-  {
-    key: "4",
-    label: <h4>Assign Vehicle</h4>,
-    children: <AssignVehicleForAdmin />,
-  },
+  // {
+  //   key: "4",
+  //   label: <h4>Assign Vehicle</h4>,
+  //   children: <AssignVehicleForAdmin />,
+  // },
 ];
 
 export const vehicleScreenTabsForCompanyOwner = [
@@ -114,5 +117,18 @@ export const vehicleScreenTabsForCompanyOwner = [
     key: "3",
     label: <h4>Assign Vehicle</h4>,
     children: <AssignVehicleForCompanyOwner />,
+  },
+  // {
+  //   key: "4",
+  //   label: <h4>Un-Assign Vehicle</h4>,
+  //   children: <UnAssignVehicleForCompanyOwner />,
+  // },
+];
+
+export const vehicleDetailsScreenTabsForEmployee = [
+  {
+    key: "1",
+    label: <h4>Allocated Vehicle Details</h4>,
+    children: <VehicleDetailsForEmployee />,
   },
 ];
