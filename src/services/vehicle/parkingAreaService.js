@@ -11,10 +11,11 @@ const parkingAreaSchema = Joi.object({
     .regex(/^[0-9a-fA-F]{24}$/)
     .required(),
   totalSlots: Joi.number().min(1).max(99999999999).required(),
-  bookedSlots: Joi.number().min(0).max(99999999999),
-  locationId: Joi.string()
-    .regex(/^[0-9a-fA-F]{24}$/)
-    .required(),
+  type: Joi.string().min(2).max(10).required(),
+  // bookedSlots: Joi.number().min(0).max(99999999999),
+  // locationId: Joi.string()
+  //   .regex(/^[0-9a-fA-F]{24}$/)
+  //   .required(),
 });
 
 async function addParkingArea(parkingArea) {

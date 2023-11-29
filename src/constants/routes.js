@@ -40,6 +40,11 @@ export const links = [
     component: ComapnyDetailsScreen,
     permissions: ["company", "admin"],
   },
+  // {
+  //   path: "/vehicles/details",
+  //   component: ComapnyDetailsScreen,
+  //   permissions: ["company", "admin"],
+  // },
   {
     path: "/departments",
     component: DepartmentsScreen,

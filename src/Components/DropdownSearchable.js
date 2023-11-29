@@ -12,6 +12,8 @@ export default function DropdownSearhable(props) {
     showDefaultValue,
     prevSelectedItemId,
     prevSelectedItemName,
+    setIsListEmpty = "",
+    isListEmpty = "",
   } = props;
 
   const [value, setValue] = useState("");
@@ -32,6 +34,20 @@ export default function DropdownSearhable(props) {
     list.filter((item) => {
       return item[displayKey]?.toLowerCase().includes(value?.toString().toLowerCase());
     });
+
+  if (filteredItems.length === 0 && isListEmpty.toString()) {
+    setIsListEmpty(true);
+  }
+
+  useEffect(() => {
+    if (isListEmpty.toString() && isListEmpty === true) {
+      const time = setTimeout(() => {
+        setIsListEmpty(false);
+      }, 2000);
+
+      return () => clearTimeout(time);
+    }
+  }, [isListEmpty]);
 
   useEffect(() => {
     // setFilteredItems(items);

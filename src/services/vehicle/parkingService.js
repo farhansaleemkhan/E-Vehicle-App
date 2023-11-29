@@ -14,12 +14,25 @@ const parkingSchema = Joi.object({
     .required(),
 });
 
+const customMessage = "Please select start and end time.";
+
 const findParkingsSchema = Joi.object({
   // companyId: Joi.string()
   //   .regex(/^[0-9a-fA-F]{24}$/)
   //   .required(),
-  startTime: Joi.number().min(0).max(9999999999999).required(),
-  endTime: Joi.number().min(0).max(9999999999999).required(),
+  startTime: Joi.number().min(100000).max(9999999999999).required().messages({
+    "number.base": customMessage,
+    "number.min": customMessage,
+    "number.max": customMessage,
+    "any.required": customMessage,
+  }),
+
+  endTime: Joi.number().min(100000).max(9999999999999).required().messages({
+    "number.base": customMessage,
+    "number.min": customMessage,
+    "number.max": customMessage,
+    "any.required": customMessage,
+  }),
 });
 
 const addParkingSchema = Joi.object({
@@ -29,8 +42,8 @@ const addParkingSchema = Joi.object({
   parkingAreaId: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/)
     .required(),
-  startTime: Joi.number().min(0).max(9999999999999).required(),
-  endTime: Joi.number().min(0).max(9999999999999).required(),
+  startTime: Joi.number().min(100000).max(9999999999999).required(),
+  endTime: Joi.number().min(100000).max(9999999999999).required(),
 });
 
 async function addParking(parking) {
@@ -54,6 +67,17 @@ async function getParkings(queryParams = "") {
   }
 }
 
+async function deleteParking(id) {
+  try {
+    await http.delete(parkingsApiEndpoint + `/${id}`);
+    showSuccessToaster("Successfuly deleted!");
+    return true;
+  } catch (err) {
+    showFailureToaster(err.data.errorMessage);
+    return false;
+  }
+}
+
 async function findParkings(payload) {
   try {
     const response = await http.post(parkingsApiEndpoint + "/find-parkings", { ...payload });
@@ -70,5 +94,6 @@ export const parkingService = {
   addParkingSchema,
   addParking,
   getParkings,
+  deleteParking,
   findParkings,
 };

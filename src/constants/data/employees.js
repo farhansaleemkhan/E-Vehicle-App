@@ -69,11 +69,11 @@ export const employeeScreenTabsForAdmin = [
     label: <h4>Search Employee</h4>,
     children: <SearchEmployee />,
   },
-  {
-    key: "2",
-    label: <h4>Add Employee</h4>,
-    children: <AddEmployeeForAdmin />,
-  },
+  // {
+  //   key: "2",
+  //   label: <h4>Add Employee</h4>,
+  //   children: <AddEmployeeForAdmin />,
+  // },
   {
     key: "3",
     label: <h4>All Employees</h4>,

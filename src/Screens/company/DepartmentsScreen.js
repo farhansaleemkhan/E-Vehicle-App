@@ -13,6 +13,7 @@ import { companyService } from "../../services/company/companyService";
 import { departmentService } from "../../services/company/departmentService";
 import { getLocalStorageItem } from "../../utils/localStorage";
 import { showFailureToaster } from "../../utils/toaster";
+import Error from "../../Components/Error";
 
 export default function DepartmentsScreen() {
   const userType = getLocalStorageItem("userType");
@@ -36,6 +37,7 @@ export function SearchDepartment() {
   const [allCompanies, setAllCompanies] = useState([]);
   const [departmentsForSpecificCompany, setDepartmentsForSpecificCompany] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState("");
+  const [isListEmpty, setIsListEmpty] = useState(false);
 
   useEffect(() => {
     fetchAllCompanies();
@@ -44,6 +46,10 @@ export function SearchDepartment() {
   useEffect(() => {
     if (selectedCompany.id) fetchDepartmentsForSpecificCompany(selectedCompany.id);
   }, [selectedCompany]);
+
+  useEffect(() => {
+    if (isListEmpty === true) setDepartmentsForSpecificCompany([]);
+  }, [isListEmpty]);
 
   const fetchAllCompanies = async () => {
     try {
@@ -79,18 +85,22 @@ export function SearchDepartment() {
     <>
       <div className="allCompaniesScreen">
         <>
-          <DetailsContainer title="Search Departments For Specific Company:" showDropdown>
+          <DetailsContainer title="Search Departments by Company:" showDropdown>
             <div style={{ margin: "2rem 0" }}>
               <DropdownSearhable
                 idkey="id"
                 displayKey="username"
-                placeholder="Select Company."
+                placeholder="Click here to search."
                 // style={styles.dropDown.smallDropDownWithoutBorder}
                 list={allCompanies}
                 selectedItem={selectedCompany}
                 setSelectedItem={setSelectedCompany}
+                setIsListEmpty={setIsListEmpty}
+                isListEmpty={isListEmpty}
               ></DropdownSearhable>
             </div>
+
+            {isListEmpty && <Error message="No Data found" />}
 
             <div className="table-container">
               <Table tableColumns={allDepartmentsColumns} tableBody={departmentsForSpecificCompany} />
@@ -123,7 +133,7 @@ export function AllDepartments() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="All Departments:" showDropdown>
+        <DetailsContainer title="" showDropdown>
           <div className="table-container">
             <Table tableColumns={allDepartmentsColumns} tableBody={allDepartments} />
           </div>
@@ -155,7 +165,8 @@ export function AllDepartmentsForCompanyOwner() {
   return (
     <>
       <div className="allCompaniesScreen">
-        <DetailsContainer title="All Departments:" showDropdown>
+        {/* <DetailsContainer title="All Departments:" showDropdown> */}
+        <DetailsContainer title="" showDropdown>
           <div className="table-container">
             <Table tableColumns={allDepartmentsColumns} tableBody={allDepartments} />
           </div>
@@ -182,7 +193,7 @@ export function AddDepartmentsForCompanyOwner() {
   return (
     <div className="allCompaniesScreen">
       <DetailsContainer title="Enter Info:" showDropdown>
-        <div className="fr" style={{ width: "30rem" }}>
+        <div className="fr" style={{ width: "30rem", padding: "2rem 1rem" }}>
           <input
             type="text"
             className="form-control"

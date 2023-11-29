@@ -57,14 +57,16 @@ const Navbar = () => {
             {userDetails.username && (
               <div className="dropdown">
                 <button
-                  className="btn btn-secondary dropdown-toggle px-5 buttonDarker"
+                  className="btn btn-secondary dropdown-toggle px-5 buttonDarker d-flex"
                   type="button"
                   id="dropdownMenuButton"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
+                  style={{ alignItems: "center", justifyContent: "center" }}
                 >
-                  <i className="fa fa-user"></i> {userDetails.username}
+                  <i className="fa fa-user"></i>
+                  <h4 style={{ margin: "0 .5rem", fontWeight: "bold" }}>{userDetails.username}</h4>
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {/* <a className="dropdown-item" href="/profile">

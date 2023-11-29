@@ -6,6 +6,7 @@ const Sidebar = () => {
   let sidebarItems = null;
   const userType = getLocalStorageItem("userType");
   const companyId = getLocalStorageItem("companyId");
+  const employeeId = getLocalStorageItem("employeeId");
   const location = useLocation();
 
   if (userType === "admin") {
@@ -25,7 +26,10 @@ const Sidebar = () => {
       { id: 3, name: "Employees", link: "/employees" },
     ];
   } else if (userType === "employee") {
-    sidebarItems = [{ id: 2, name: "Parking", link: "/parkings" }];
+    sidebarItems = [
+      { id: 1, name: "Parking", link: "/parkings" },
+      { id: 2, name: "Vehicle", link: "/vehicles" },
+    ];
   }
 
   return (

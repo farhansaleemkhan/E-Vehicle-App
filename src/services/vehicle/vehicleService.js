@@ -13,9 +13,9 @@ const vehicleSchema = Joi.object({
   model: Joi.string().min(0).max(30).required(),
   licensePlateNumber: Joi.string().min(0).max(20).required(),
   chassisNumber: Joi.string().min(5).max(255).required(),
-  isParked: Joi.boolean(),
+  // isParked: Joi.boolean(),
   isAssigned: Joi.boolean(),
-  isWorkingFine: Joi.boolean(),
+  // isWorkingFine: Joi.boolean(),
   vehicleType: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/)
     .required(),
