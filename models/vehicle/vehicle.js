@@ -31,18 +31,18 @@ const vehicleSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 255,
   },
-  isParked: {
-    type: Boolean,
-    default: false,
-  },
+  // isParked: {
+  //   type: Boolean,
+  //   default: false,
+  // },
   isAssigned: {
     type: Boolean,
     default: false,
   },
-  isWorkingFine: {
-    type: Boolean,
-    default: true,
-  },
+  // isWorkingFine: {
+  //   type: Boolean,
+  //   default: true,
+  // },
   vehicleType: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "VehicleType",
@@ -78,9 +78,9 @@ function validateVehicle(vehicle) {
     model: Joi.string().min(0).max(30).required(),
     licensePlateNumber: Joi.string().min(0).max(20).required(),
     chassisNumber: Joi.string().min(5).max(255).required(),
-    isParked: Joi.boolean(),
+    // isParked: Joi.boolean(),
     isAssigned: Joi.boolean(),
-    isWorkingFine: Joi.boolean(),
+    // isWorkingFine: Joi.boolean(),
     vehicleType: Joi.string()
       .regex(/^[0-9a-fA-F]{24}$/)
       .required(),
