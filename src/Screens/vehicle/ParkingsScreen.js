@@ -14,6 +14,7 @@ import { parkingService } from "../../services/vehicle/parkingService";
 import { showFailureToaster } from "../../utils/toaster";
 import Table from "../../Components/Table";
 import {
+  companyParkingAreasColumnsForParkingBooking,
   employeepParkingHistoryColumns,
   parkingAreasColumns,
   parkingAreasColumnsForParkingBooking,
@@ -742,112 +743,268 @@ export function SearchParkingAreaForCompanyOwner() {
   );
 }
 
-export function AllParkingAreasForCompanyOwner() {
-  const [allParkingAreas, setAllParkingAreas] = useState([]);
-  const [selectedParkingArea, setSelectedParkingArea] = useState("");
-  const [searchedParkingAreas, setSearchedParkingAreas] = useState("");
-  const [isListEmpty, setIsListEmpty] = useState(false);
-  const { currentUser } = useContext(AuthContext);
+// export function AllParkingAreasForCompanyOwner() {
+//   const [allParkingAreas, setAllParkingAreas] = useState([]);
+//   const [selectedParkingArea, setSelectedParkingArea] = useState("");
+//   const [searchedParkingAreas, setSearchedParkingAreas] = useState("");
+//   const [isListEmpty, setIsListEmpty] = useState(false);
+//   const { currentUser } = useContext(AuthContext);
 
-  // useEffect(() => {
-  //   fetchAllParkingLocations();
-  // }, []);
+//   // useEffect(() => {
+//   //   fetchAllParkingLocations();
+//   // }, []);
+
+//   useEffect(() => {
+//     fetchSpecificCompany(currentUser._id).then((data) => {
+//       fetchAllParkingLocations(data._id);
+//     });
+//   }, []);
+
+//   useEffect(() => {
+//     if (selectedParkingArea.id) {
+//       fetchSpecificCompany(currentUser._id).then((data) => {
+//         fetchAllParkingLocationsWithName(data._id);
+//       });
+//     }
+//   }, [selectedParkingArea]);
+
+//   useEffect(() => {
+//     if (isListEmpty === true) setSearchedParkingAreas([]);
+//   }, [isListEmpty]);
+
+//   const fetchSpecificCompany = async (id) => {
+//     try {
+//       const response = await companyService.getCompanies("", id);
+//       return response.data[0];
+//     } catch (error) {}
+//   };
+
+//   const fetchAllParkingLocations = async (id) => {
+//     try {
+//       const response = await parkingAreaService.getParkingAreas(`?belongsTo=${id}`);
+
+//       let tableBodyData = response.data.map((item) => ({
+//         id: item._id,
+//         name: item.name,
+//         totalSlots: item.totalSlots,
+//         // bookedSlots: item.bookedSlots,
+//         // location: "VIEW",
+//         belongsTo: item.belongsTo.userId.username,
+//       }));
+
+//       setAllParkingAreas(tableBodyData);
+//       setSearchedParkingAreas(tableBodyData);
+//     } catch (error) {}
+//   };
+
+//   const fetchAllParkingLocationsWithName = async (id) => {
+//     try {
+//       const response = await parkingAreaService.getParkingAreas(`?belongsTo=${id}`);
+
+//       let tableBodyData = response.data.map((item) => ({
+//         id: item._id,
+//         name: item.name,
+//         totalSlots: item.totalSlots,
+//         // bookedSlots: item.bookedSlots,
+//         // location: "VIEW",
+//         belongsTo: item.belongsTo.userId.username,
+//       }));
+
+//       let filteredTableBodyData = tableBodyData.filter((item) => {
+//         return item.name.toUpperCase() == selectedParkingArea.name.toUpperCase();
+//       });
+
+//       // setAllParkingAreas(filteredTableBodyData);
+//       setSearchedParkingAreas(filteredTableBodyData);
+
+//       // setAllParkingAreas(tableBodyData);
+//     } catch (error) {}
+//   };
+
+//   return (
+//     <>
+//       <div className="allCompaniesScreen">
+//         {/* {currentUser.type === "admin" && ( */}
+//         <DetailsContainer title="" showDropdown>
+//           {/* <div style={{ margin: "2rem 0" }}>
+//             <DropdownSearhable
+//               idkey="id"
+//               displayKey="name"
+//               placeholder="Filter by Name."
+//               // style={styles.dropDown.smallDropDownWithoutBorder}
+//               list={allParkingAreas}
+//               selectedItem={selectedParkingArea}
+//               setSelectedItem={setSelectedParkingArea}
+//               setIsListEmpty={setIsListEmpty}
+//               isListEmpty={isListEmpty}
+//             ></DropdownSearhable>
+//           </div>
+
+//           {isListEmpty && <Error message="No Data found" />} */}
+
+//           <div className="table-container">
+//             <Table tableColumns={parkingAreasColumns} tableBody={searchedParkingAreas} />
+//           </div>
+//         </DetailsContainer>
+//         {/* )} */}
+//       </div>
+//     </>
+//   );
+// }
+
+export function AllParkingAreasForCompanyOwner() {
+  const [currentuserDetails, setCurrentUserDetails] = useState("");
+  const [parkings, setParkings] = useState([]);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [type, setType] = useState("");
+  const [loading, setLoading] = useState();
+  const [error, setError] = useState();
+  const [selectedCompany, setSelectedCompany] = useState([]);
 
   useEffect(() => {
-    fetchSpecificCompany(currentUser._id).then((data) => {
-      fetchAllParkingLocations(data._id);
+    fetchSpecificUser(getLocalStorageItem("companyId")).then((data) => {
+      setCurrentUserDetails(data);
+      setSelectedCompany(data._id);
     });
   }, []);
 
-  useEffect(() => {
-    if (selectedParkingArea.id) {
-      fetchSpecificCompany(currentUser._id).then((data) => {
-        fetchAllParkingLocationsWithName(data._id);
-      });
-    }
-  }, [selectedParkingArea]);
-
-  useEffect(() => {
-    if (isListEmpty === true) setSearchedParkingAreas([]);
-  }, [isListEmpty]);
-
-  const fetchSpecificCompany = async (id) => {
+  const fetchSpecificUser = async (id) => {
     try {
-      const response = await companyService.getCompanies("", id);
+      const response = await companyService.getCompanies(id, "");
       return response.data[0];
     } catch (error) {}
   };
 
-  const fetchAllParkingLocations = async (id) => {
+  const fetchAvailableParkings = async () => {
     try {
-      const response = await parkingAreaService.getParkingAreas(`?belongsTo=${id}`);
+      let payload = {
+        startTime: fromDate * 1000,
+        endTime: toDate * 1000,
+      };
 
-      let tableBodyData = response.data.map((item) => ({
+      const { error } = parkingService.findParkingsSchema.validate(payload);
+      if (error) return showFailureToaster(error.message);
+
+      setLoading(true);
+      let queryParams = `?belongsTo=${selectedCompany}`;
+      if (type) queryParams += `&type=${type}`;
+
+      let parkings = await parkingAreaService.getParkingAreas(queryParams);
+      let currentParkings = await parkingService.findParkings(payload);
+
+      parkings = parkings?.data?.map((item) => ({
+        // ...item,
         id: item._id,
-        name: item.name,
-        totalSlots: item.totalSlots,
-        // bookedSlots: item.bookedSlots,
-        // location: "VIEW",
-        belongsTo: item.belongsTo.userId.username,
+        Name: item.name,
+        "Total Slots": item.totalSlots,
+        bookedSlots: currentParkings[item._id]?.length ? currentParkings[item._id]?.length : 0,
+        type: item.type,
+        company: item.belongsTo.userId.username,
       }));
 
-      setAllParkingAreas(tableBodyData);
-      setSearchedParkingAreas(tableBodyData);
-    } catch (error) {}
+      setParkings(parkings);
+      // setDuplicateParking(data);
+      setLoading(false);
+    } catch (error) {
+      setError(true);
+      setLoading(false);
+    }
   };
 
-  const fetchAllParkingLocationsWithName = async (id) => {
-    try {
-      const response = await parkingAreaService.getParkingAreas(`?belongsTo=${id}`);
+  function updateDates(dates) {
+    const [startDate, endDate] = dates;
 
-      let tableBodyData = response.data.map((item) => ({
-        id: item._id,
-        name: item.name,
-        totalSlots: item.totalSlots,
-        // bookedSlots: item.bookedSlots,
-        // location: "VIEW",
-        belongsTo: item.belongsTo.userId.username,
-      }));
+    // Convert to Unix timestamp in seconds
+    const startUnixTimestamp = dayjs(startDate).unix();
+    const endUnixTimestamp = dayjs(endDate).unix();
 
-      let filteredTableBodyData = tableBodyData.filter((item) => {
-        return item.name.toUpperCase() == selectedParkingArea.name.toUpperCase();
-      });
+    setFromDate(startUnixTimestamp);
+    setToDate(endUnixTimestamp);
+  }
 
-      // setAllParkingAreas(filteredTableBodyData);
-      setSearchedParkingAreas(filteredTableBodyData);
+  const range = (start, end) => {
+    const result = [];
+    for (let i = start; i < end; i++) result.push(i);
 
-      // setAllParkingAreas(tableBodyData);
-    } catch (error) {}
+    return result;
+  };
+
+  const disabledDate = (current) => {
+    if (current && current < dayjs().startOf("day")) return true;
+
+    return false;
+  };
+
+  const disabledRangeTime = (_, type) => {
+    const currentMoment = dayjs();
+    const isCurrentDate = currentMoment.isSame(_, "date");
+
+    return {
+      disabledHours: () => (isCurrentDate ? range(0, currentMoment.hour()) : []),
+      disabledMinutes: () =>
+        isCurrentDate && _ && dayjs(_).isSame(currentMoment, "hour")
+          ? range(0, currentMoment.minute())
+          : [],
+      disabledSeconds: () => [],
+    };
   };
 
   return (
-    <>
-      <div className="allCompaniesScreen">
-        {/* {currentUser.type === "admin" && ( */}
-        <DetailsContainer title="" showDropdown>
-          {/* <div style={{ margin: "2rem 0" }}>
-            <DropdownSearhable
-              idkey="id"
-              displayKey="name"
-              placeholder="Filter by Name."
-              // style={styles.dropDown.smallDropDownWithoutBorder}
-              list={allParkingAreas}
-              selectedItem={selectedParkingArea}
-              setSelectedItem={setSelectedParkingArea}
-              setIsListEmpty={setIsListEmpty}
-              isListEmpty={isListEmpty}
-            ></DropdownSearhable>
+    <div>
+      <div className="container">
+        <div className="row mt-5 shadow d-flex  align-items-center justify-content-center">
+          <div className="col-md-4">
+            <RangePicker
+              disabledDate={disabledDate}
+              disabledTime={disabledRangeTime}
+              showTime={{
+                hideDisabledOptions: true,
+                defaultValue: [
+                  dayjs(dayjs().format("HH:mm:ss"), "HH:mm:ss"),
+                  dayjs(dayjs().format("HH:mm:ss"), "HH:mm:ss"),
+                ],
+              }}
+              format="YYYY-MM-DD HH:mm:ss"
+              onChange={updateDates}
+            />
           </div>
 
-          {isListEmpty && <Error message="No Data found" />} */}
-
-          <div className="table-container">
-            <Table tableColumns={parkingAreasColumns} tableBody={searchedParkingAreas} />
+          <div className="col-md-2">
+            <select
+              className="form-control"
+              value={type}
+              onChange={(e) => {
+                setType(e.target.value);
+              }}
+            >
+              <option value="">All</option>
+              <option value="covered">Covered</option>
+              <option value="uncovered">Uncovered</option>
+            </select>
           </div>
-        </DetailsContainer>
-        {/* )} */}
+          <button
+            className="btn buttonDarker "
+            type="submit"
+            style={{ width: "5rem", fontWeight: "bold" }}
+            onClick={fetchAvailableParkings}
+          >
+            Search
+          </button>
+        </div>
       </div>
-    </>
+      <div className="row justify-content-center mt-5">
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="table-container">
+            {parkings.length > 0 && (
+              <Table tableColumns={companyParkingAreasColumnsForParkingBooking} tableBody={parkings} />
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -1305,6 +1462,27 @@ export function ParkVehicleForEmployee() {
   };
 
   async function submitParkVehicle(rowData) {
+    // employee cannot have reservation more than 24 hours
+    if (toDate - fromDate > 86400) return showFailureToaster("Max time for parking is 24 hours.");
+
+    // if no of parkings exceeded parkings spots limits, show error
+    if (rowData.bookedSlots == rowData["Total Slots"])
+      return showFailureToaster("Parking limit reached. Try later.");
+
+    const employeeBookings = await parkingService.getParkings(`?employeeId=${currentuserDetails._id}`);
+    let employeeBookingsData = employeeBookings.data.map((item) => ({
+      status: {
+        componentName: TablePill,
+        value: item?.endTime < Date.now() ? "Completed" : "Booked",
+      },
+    }));
+
+    // employee cannot have more than 1 parkings
+    let BookedParkings = 0;
+    for (let item of employeeBookingsData) if (item.status.value === "Booked") BookedParkings++;
+
+    if (BookedParkings >= 1) return showFailureToaster("Parking already booked.");
+
     let payload = {
       employeeId: currentuserDetails._id,
       parkingAreaId: rowData.id,

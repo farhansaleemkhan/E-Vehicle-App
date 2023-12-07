@@ -85,6 +85,39 @@ export const parkingAreasColumnsForParkingBooking = [
   },
 ];
 
+export const companyParkingAreasColumnsForParkingBooking = [
+  {
+    name: "Id",
+    value: "Id",
+    class: { width: "12rem", minWidth: "12rem" },
+  },
+  {
+    name: "Name",
+    value: "Name",
+    class: { width: "8rem", minWidth: "8rem" },
+  },
+  {
+    name: "Total Slots",
+    value: "Total Slots",
+    class: { width: "10rem", minWidth: "10rem" },
+  },
+  {
+    name: "Booked Slots",
+    value: "Booked Slots",
+    class: { width: "10rem", minWidth: "10rem" },
+  },
+  {
+    name: "Type",
+    value: "Type",
+    class: { width: "12rem", minWidth: "12rem" },
+  },
+  {
+    name: "Company",
+    value: "Company",
+    class: { width: "12rem", minWidth: "12rem" },
+  },
+];
+
 export const parkingColumns = [
   // {
   //   name: "Id",

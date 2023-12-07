@@ -983,10 +983,11 @@ export function VehicleDetailsForEmployee() {
           Model: response.data[0].model,
           "License Plate Number": response.data[0].licensePlateNumber,
           "Chassis Number": response.data[0].chassisNumber,
-          "Is Parked": response.data[0].isParked.toString(),
+          // "Is Parked": response.data[0].isParked.toString(),
           "Fuel Given": response.data[0].fuelGiven,
           "Fuel Consumed": response.data[0].fuelConsumed,
           "Fuel Type": response.data[0].fuelType.name,
+          "": "",
         };
 
         setvehicleDetails(data);
