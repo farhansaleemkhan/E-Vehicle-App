@@ -44,6 +44,7 @@ const addParkingSchema = Joi.object({
     .required(),
   startTime: Joi.number().min(100000).max(9999999999999).required(),
   endTime: Joi.number().min(100000).max(9999999999999).required(),
+  slotNo: Joi.string().required(),
 });
 
 async function addParking(parking) {

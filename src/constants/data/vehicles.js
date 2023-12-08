@@ -47,16 +47,16 @@ export const allVehiclesColumns = [
     value: "is Assigned?",
     class: { width: "10rem", minWidth: "10rem" },
   },
-  {
-    name: "is Parked?",
-    value: "is Parked?",
-    class: { width: "10rem", minWidth: "10rem" },
-  },
-  {
-    name: "Fuel Consumed/ Month (Litre)",
-    value: "Fuel Consumed/ Month (Litre)",
-    class: { width: "14rem", minWidth: "14rem" },
-  },
+  // {
+  //   name: "is Parked?",
+  //   value: "is Parked?",
+  //   class: { width: "10rem", minWidth: "10rem" },
+  // },
+  // {
+  //   name: "Fuel Consumed/ Month (Litre)",
+  //   value: "Fuel Consumed/ Month (Litre)",
+  //   class: { width: "14rem", minWidth: "14rem" },
+  // },
   {
     name: "Fuel Allcoated/ Month (Litre)",
     value: "Fuel Allcoated/ Month (Litre)",
@@ -67,11 +67,11 @@ export const allVehiclesColumns = [
     value: "Fuelt Type",
     class: { width: "9rem", minWidth: "9rem" },
   },
-  {
-    name: "is Working Fine?",
-    value: "is Working Fine?",
-    class: { width: "14rem", minWidth: "14rem" },
-  },
+  // {
+  //   name: "is Working Fine?",
+  //   value: "is Working Fine?",
+  //   class: { width: "14rem", minWidth: "14rem" },
+  // },
   {
     name: "Company",
     value: "Company",

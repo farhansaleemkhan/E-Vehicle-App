@@ -153,11 +153,11 @@ export function AllVehicles() {
         chassisNumber: item.chassisNumber,
         vehicleType: item.vehicleType.name,
         isAssigned: item.isAssigned === true ? "Yes" : "No",
-        isParked: item.isParked === true ? "Yes" : "No",
-        fuelConsumed: item.fuelConsumed,
+        // isParked: item.isParked === true ? "Yes" : "No",
+        // fuelConsumed: item.fuelConsumed,
         fuelGiven: item.fuelGiven,
         fuelType: item.fuelType.name,
-        isWorkingFine: item.isWorkingFine === true ? "Yes" : "No",
+        // isWorkingFine: item.isWorkingFine === true ? "Yes" : "No",
         company: item.companyId.userId.username,
       }));
 
@@ -195,11 +195,11 @@ export function AllVehiclesForCompanyOwner() {
         chassisNumber: item.chassisNumber,
         vehicleType: item.vehicleType.name,
         isAssigned: item.isAssigned === true ? "Yes" : "No",
-        isParked: item.isParked === true ? "Yes" : "No",
-        fuelConsumed: item.fuelConsumed,
+        // isParked: item.isParked === true ? "Yes" : "No",
+        // fuelConsumed: item.fuelConsumed,
         fuelGiven: item.fuelGiven,
         fuelType: item.fuelType.name,
-        isWorkingFine: item.isWorkingFine === true ? "Yes" : "No",
+        // isWorkingFine: item.isWorkingFine === true ? "Yes" : "No",
         company: item.companyId.userId.username,
       }));
 

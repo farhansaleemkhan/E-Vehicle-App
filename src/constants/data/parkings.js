@@ -79,6 +79,11 @@ export const parkingAreasColumnsForParkingBooking = [
     class: { width: "12rem", minWidth: "12rem" },
   },
   {
+    name: "Get Slot",
+    value: "Get Slot",
+    class: { width: "12rem", minWidth: "12rem" },
+  },
+  {
     name: "Park Here",
     value: "Park Here",
     class: { width: "10rem", minWidth: "10rem" },
@@ -166,6 +171,11 @@ export const parkingColumns = [
     class: { width: "15rem", minWidth: "15rem" },
   },
   {
+    name: "Slot No",
+    value: "Slot No",
+    class: { width: "8rem", minWidth: "8rem" },
+  },
+  {
     name: "Status",
     value: "Status",
     class: { width: "10rem", minWidth: "10rem" },
@@ -202,6 +212,11 @@ export const employeepParkingHistoryColumns = [
     name: "Parking Area Name",
     value: "Parking Area Name",
     class: { width: "14rem", minWidth: "14rem" },
+  },
+  {
+    name: "Slot No",
+    value: "Slot No",
+    class: { width: "8rem", minWidth: "8rem" },
   },
   {
     name: "Status",
