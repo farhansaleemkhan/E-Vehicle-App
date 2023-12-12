@@ -224,6 +224,11 @@ export const employeepParkingHistoryColumns = [
     class: { width: "8rem", minWidth: "8rem" },
   },
   {
+    name: "Print Token",
+    value: "Print Token",
+    class: { width: "8rem", minWidth: "8rem" },
+  },
+  {
     name: "Delete",
     value: "Delete",
     class: { width: "8rem", minWidth: "8rem" },

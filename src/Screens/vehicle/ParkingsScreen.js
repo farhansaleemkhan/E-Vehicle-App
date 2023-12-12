@@ -1628,15 +1628,14 @@ export function ParkVehicleForEmployee() {
   };
 
   async function submitParkVehicle(rowData) {
-    console.log("slotttt ", selectedSlot);
+    // if no of parkings exceeded parkings spots limits, show error
+    if (rowData.bookedSlots == rowData["Total Slots"])
+      return showFailureToaster("Parking limit reached. Try later.");
+
     if (!selectedSlot) return showFailureToaster("Select parking slot.");
 
     // employee cannot have reservation more than 24 hours
     if (toDate - fromDate > 86400) return showFailureToaster("Max time for parking is 24 hours.");
-
-    // if no of parkings exceeded parkings spots limits, show error
-    if (rowData.bookedSlots == rowData["Total Slots"])
-      return showFailureToaster("Parking limit reached. Try later.");
 
     const employeeBookings = await parkingService.getParkings(`?employeeId=${currentuserDetails._id}`);
     let employeeBookingsData = employeeBookings.data.map((item) => ({
@@ -1915,6 +1914,7 @@ export function ParkingHistoryForEmployee() {
   const fetchAllParkings = async (id) => {
     try {
       const response = await parkingService.getParkings(`?employeeId=${id}`);
+      console.log("fetchAllParkings ", response);
 
       let tableBodyData = response.data.map((item) => ({
         id: item._id,
@@ -1930,6 +1930,30 @@ export function ParkingHistoryForEmployee() {
         status: {
           componentName: TablePill,
           value: item?.endTime < Date.now() ? "Completed" : "Booked",
+        },
+        receipt: {
+          componentName: "image",
+          url: "/Print icon.svg",
+          value: "",
+          handler: (data) => {
+            console.log("dataaaa ", data);
+            window.open(
+              `/receipt?id=${item._id}&parkedby=${item.employeeId?.userId?.username}&vehnum=${
+                item.employeeId.assignedVehicleId.licensePlateNumber
+              }&vehname=${
+                (item.employeeId.assignedVehicleId.manufacturer,
+                " ",
+                item.employeeId.assignedVehicleId.model)
+              }&booktime=${
+                moment(item?.startTime).format("YYYY-MM-DD HH:mm:ss") +
+                "    -------   " +
+                moment(item?.endTime).format("YYYY-MM-DD HH:mm:ss")
+              }&comname=${item.parkingAreaId.belongsTo.userId.username}&parkareaname=${
+                item.parkingAreaId.name
+              }&slotno=${item.slotNo}`,
+              "_blank"
+            );
+          },
         },
         delete: {
           componentName: TableIcon,
@@ -1947,6 +1971,8 @@ export function ParkingHistoryForEmployee() {
       setAllParkings(tableBodyData);
     } catch (error) {}
   };
+
+  const printPdf = (value) => {};
 
   const submitDeletParking = async (id) => {
     try {

@@ -11,6 +11,7 @@ import CompanyRegScreen from "../Screens/CompanyRegScreen";
 import ParkVehicle from "../Screens/HomeScreen";
 import CompanyAdminScreen from "../Screens/CompanyAdminScreen";
 import BookingScreen from "../Screens/BookingScreen";
+import Receipt from "../Components/Receipt";
 
 export const navbarItems = [];
 
@@ -103,6 +104,11 @@ export const links = [
   {
     path: "/book",
     component: BookingScreen,
+    permissions: ["employee", "company", "admin"],
+  },
+  {
+    path: "/receipt",
+    component: Receipt,
     permissions: ["employee", "company", "admin"],
   },
 ];
