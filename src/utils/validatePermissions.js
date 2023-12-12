@@ -7,6 +7,7 @@ import Footer from "../Components/Footer";
 import Register from "../Screens/RegisterScreen";
 import { auth } from "../services/authService";
 import Sidebar from "../Components/Sidebar";
+import LandingScreen from "../Screens/LandingScreen";
 
 export function PrivateRoutes({ permissions, children }) {
   const navigate = useNavigate();
@@ -26,11 +27,17 @@ export function PrivateRoutes({ permissions, children }) {
 
   /* Permission not available, you cannot acces this page, you can also log out the user */
   if (window.location.pathname === "/register") return <Register />;
-  else {
-    if (window.location.pathname !== "/") navigate("/");
-
-    return <Login />;
-  }
+  if (window.location.pathname === "/login") return <Login />;
+  // if (window.location.pathname !== "/")
+  return (
+    <>
+      <Navbar />
+      <div className="screen">
+        <LandingScreen />
+      </div>
+      <Footer />
+    </>
+  );
 }
 
 function hasPermission(permissions) {

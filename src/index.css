@@ -337,6 +337,20 @@ label {
   color: white;
 }
 
+.link1 {
+  text-decoration: none;
+  color: white;
+  background-color: var(--primary);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.link1:hover {
+  text-decoration: none;
+  color: white;
+  background-color: var(--primary-darker);
+}
+
 /* Footer */
 
 .footer {
