@@ -1,52 +1,17 @@
-// import React from "react";
-
-// function Modal({ show }) {
-//   return (
-//     <div
-//     // style={{ border: "1px solid red", height: "10rem" }}
-//     >
-//       {true && (
-//         <div
-//           className="modal"
-//           style={{ border: "1px solid red", height: "10rem", backgroundColor: "red" }}
-//         >
-//           <div onClick={(e) => e.stopPropagation()} className="modalContent">
-//             <div className="mainCheckboxContainer">
-//               <div className="checkboxContainer">
-//                 {[{ name: "ss", isSelected: true }].map((item, index) => (
-//                   <div className="checkboxGroup">
-//                     <input
-//                       type="checkbox"
-//                       onChange={(e) => {
-//                         //   handlePermission(item, e, index);
-//                       }}
-//                       checked={item.isSelected}
-//                     />
-//                     sss
-//                     <p>{item.name}</p>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Modal;
-
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function Modaal({ showModal, setShowModal, callback, slots, selectedSlot, setSelectedSlot }) {
-  //   const [show, setShow] = useState(false);
-  //
+    const [show, setShow] = useState(false);
+  
+    const handleClose = () => {
+      setShow(false); // Update local state
+      setShowModal(false); // Update parent component state
+    };
 
-  //   const handleClose = () => setShow(false);
-  //   const handleShow = () => setShow(true);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
 
   //   useEffect(() => {
   //     console.log("slotssss ", slots);
@@ -104,9 +69,9 @@ function Modaal({ showModal, setShowModal, callback, slots, selectedSlot, setSel
           </div>
         </Modal.Body>
         <Modal.Footer>
-          {/* <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose}>
             Close
-          </Button> */}
+          </Button>
           <Button variant="primary" onClick={() => setShowModal(false)}>
             Confirm Slot
           </Button>

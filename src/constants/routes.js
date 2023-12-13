@@ -12,6 +12,7 @@ import ParkVehicle from "../Screens/HomeScreen";
 import CompanyAdminScreen from "../Screens/CompanyAdminScreen";
 import BookingScreen from "../Screens/BookingScreen";
 import Receipt from "../Components/Receipt";
+import GuardsScreen from "../Screens/company/GuardsScreen";
 
 export const navbarItems = [];
 
@@ -55,6 +56,11 @@ export const links = [
     path: "/employees",
     component: EmployeesScreen,
     permissions: ["employee", "company", "admin"],
+  },
+  {
+    path: "/guards",
+    component: GuardsScreen,
+    permissions: ["guard", "company", "admin"],
   },
   {
     path: "/vehicles",
